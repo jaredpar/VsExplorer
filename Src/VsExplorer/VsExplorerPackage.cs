@@ -8,6 +8,8 @@ using Microsoft.VisualStudio;
 using Microsoft.VisualStudio.Shell.Interop;
 using Microsoft.VisualStudio.OLE.Interop;
 using Microsoft.VisualStudio.Shell;
+using Microsoft.VisualStudio.ComponentModelHost;
+using System.ComponentModel.Composition.Hosting;
 
 namespace VsExplorer
 {
@@ -34,6 +36,9 @@ namespace VsExplorer
     [Guid(GuidList.guidVsExplorerPkgString)]
     public sealed class VsExplorerPackage : Package
     {
+        private IComponentModel _componentModel;
+        private ExportProvider _exportProvider;
+
         /// <summary>
         /// Default constructor of the package.
         /// Inside this method you can place any initialization code that does not require 
@@ -43,7 +48,29 @@ namespace VsExplorer
         /// </summary>
         public VsExplorerPackage()
         {
-            Debug.WriteLine(string.Format(CultureInfo.CurrentCulture, "Entering constructor for: {0}", this.ToString()));
+
+        }
+
+        /// <summary>
+        /// Initialization of the package; this method is called right after the package is sited, so this is the place
+        /// where you can put all the initialization code that rely on services provided by VisualStudio.
+        /// </summary>
+        protected override void Initialize()
+        {
+            base.Initialize();
+
+            _componentModel = (IComponentModel)GetService(typeof(SComponentModel));
+            _exportProvider = _componentModel.DefaultExportProvider;
+
+            // Add our command handlers for menu (commands must exist in the .vsct file)
+            OleMenuCommandService mcs = GetService(typeof(IMenuCommandService)) as OleMenuCommandService;
+            if ( null != mcs )
+            {
+                // Create the command for the tool window
+                CommandID toolwndCommandID = new CommandID(GuidList.guidVsExplorerCmdSet, (int)PkgCmdIDList.cmdidDisplayDocumentViewer);
+                MenuCommand menuToolWin = new MenuCommand(ShowToolWindow, toolwndCommandID);
+                mcs.AddCommand( menuToolWin );
+            }
         }
 
         /// <summary>
@@ -65,31 +92,8 @@ namespace VsExplorer
             Microsoft.VisualStudio.ErrorHandler.ThrowOnFailure(windowFrame.Show());
         }
 
-
         /////////////////////////////////////////////////////////////////////////////
         // Overridden Package Implementation
-        #region Package Members
-
-        /// <summary>
-        /// Initialization of the package; this method is called right after the package is sited, so this is the place
-        /// where you can put all the initialization code that rely on services provided by VisualStudio.
-        /// </summary>
-        protected override void Initialize()
-        {
-            Debug.WriteLine (string.Format(CultureInfo.CurrentCulture, "Entering Initialize() of: {0}", this.ToString()));
-            base.Initialize();
-
-            // Add our command handlers for menu (commands must exist in the .vsct file)
-            OleMenuCommandService mcs = GetService(typeof(IMenuCommandService)) as OleMenuCommandService;
-            if ( null != mcs )
-            {
-                // Create the command for the tool window
-                CommandID toolwndCommandID = new CommandID(GuidList.guidVsExplorerCmdSet, (int)PkgCmdIDList.cmdidDisplayDocumentViewer);
-                MenuCommand menuToolWin = new MenuCommand(ShowToolWindow, toolwndCommandID);
-                mcs.AddCommand( menuToolWin );
-            }
-        }
-        #endregion
 
     }
 }

@@ -7,6 +7,7 @@ using System.Windows;
 using System.Runtime.InteropServices;
 using Microsoft.VisualStudio.Shell.Interop;
 using Microsoft.VisualStudio.Shell;
+using Microsoft.VisualStudio.ComponentModelHost;
 
 namespace VsExplorer
 {
@@ -42,6 +43,23 @@ namespace VsExplorer
             // we are not calling Dispose on this object. This is because ToolWindowPane calls Dispose on 
             // the object returned by the Content property.
             base.Content = new MyControl();
+        }
+
+        protected override void Initialize()
+        {
+            base.Initialize();
+
+            var componentModel = (IComponentModel)GetService(typeof(SComponentModel));
+            var exportProvider = componentModel.DefaultExportProvider;
+            var textAdapter = exportProvider.GetExportedValue<ITextAdapter>();
+            var textView = textAdapter.ActiveTextViewOpt;
+            if (textView == null)
+            {
+                return;
+            }
+
+            var documentViewerHost = exportProvider.GetExportedValue<IDocumentViewerHost>();
+            Content = documentViewerHost.Create(textView);
         }
     }
 }
