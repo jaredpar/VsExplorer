@@ -2,7 +2,7 @@
 // MUST match PkgCmdID.h
 using System;
 
-namespace JaredPar.VsExplorer
+namespace VsExplorer
 {
     static class PkgCmdIDList
     {

@@ -12,7 +12,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace JaredPar.VsExplorer
+namespace VsExplorer
 {
     /// <summary>
     /// Interaction logic for MyControl.xaml

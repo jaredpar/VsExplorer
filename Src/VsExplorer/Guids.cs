@@ -2,7 +2,7 @@
 // MUST match guids.h
 using System;
 
-namespace JaredPar.VsExplorer
+namespace VsExplorer
 {
     static class GuidList
     {
