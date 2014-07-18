@@ -25,11 +25,14 @@ namespace VsExplorer.Implementation.DocumentView
         private void UpdateModel()
         {
             _documentViewer.TextBufferCollection.Clear();
+            _documentViewer.DocumentRoles = string.Empty;
 
             if (_textView == null)
             {
                 return;
             }
+
+            _documentViewer.DocumentRoles = String.Join(", ", _textView.Roles.ToArray());
 
             var textBuffers = GetTextBuffersRecursive(_textView.TextBuffer);
             foreach (var textBuffer in textBuffers)

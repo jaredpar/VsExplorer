@@ -8,11 +8,21 @@
              d:DesignWidth="300"
              DataContext="{Binding RelativeSource={RelativeSource Self}}">
 
-    <ListBox ItemsSource="{Binding TextBufferCollection}">
-        <ListBox.ItemTemplate>
-            <DataTemplate>
-                <TextBlock Text="{Binding Path=Name}"/>
-            </DataTemplate>
-        </ListBox.ItemTemplate>
-    </ListBox>
+    <StackPanel>
+
+        <!-- Display all of the roles here in a list -->
+        <TextBlock>
+            <TextBlock FontWeight="Bold">Document Roles: </TextBlock>
+            <TextBlock Text="{Binding Path=DocumentRoles}" />
+        </TextBlock>
+
+        <ListBox ItemsSource="{Binding TextBufferCollection}">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <TextBlock Text="{Binding Path=Name}"/>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+
+    </StackPanel>
 </UserControl>

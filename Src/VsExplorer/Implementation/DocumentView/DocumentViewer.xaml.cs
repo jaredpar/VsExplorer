@@ -21,7 +21,18 @@ namespace VsExplorer.Implementation.DocumentView
     /// </summary>
     public partial class DocumentViewer : UserControl
     {
+        public static readonly DependencyProperty DocumentRolesProperty = DependencyProperty.Register(
+            "DocumentRoles",
+            typeof(string),
+            typeof(DocumentViewer));
+
         private readonly ObservableCollection<TextBufferInfo> _textBufferInfoCollection = new ObservableCollection<TextBufferInfo>();
+
+        public string DocumentRoles
+        {
+            get { return (string)GetValue(DocumentRolesProperty); }
+            set { SetValue(DocumentRolesProperty, value); }
+        }
 
         public ObservableCollection<TextBufferInfo> TextBufferCollection
         {
