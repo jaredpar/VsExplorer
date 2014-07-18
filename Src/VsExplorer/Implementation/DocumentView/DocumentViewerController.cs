@@ -14,11 +14,13 @@ namespace VsExplorer.Implementation.DocumentView
 {
     internal sealed class DocumentViewerController : IDocumentViewerHost
     {
+        private readonly ITextDocumentFactoryService _textDocumentFactoryService;
         private readonly DocumentViewer _documentViewer;
         private ITextView _textView;
 
-        public DocumentViewerController()
+        public DocumentViewerController(ITextDocumentFactoryService textDocumentFactoryService)
         {
+            _textDocumentFactoryService = textDocumentFactoryService;
             _documentViewer = new DocumentViewer();
         }
 
@@ -37,9 +39,17 @@ namespace VsExplorer.Implementation.DocumentView
             var textBuffers = GetTextBuffersRecursive(_textView.TextBuffer);
             foreach (var textBuffer in textBuffers)
             {
+                string filePath = "";
+                ITextDocument textDocument;
+                if (_textDocumentFactoryService.TryGetTextDocument(textBuffer, out textDocument))
+                {
+                    filePath = textDocument.FilePath;
+                }
+
                 var textBufferInfo = new TextBufferInfo() { 
                     ContentType = textBuffer.ContentType.TypeName,
-                    Text = textBuffer.CurrentSnapshot.GetText()
+                    Text = textBuffer.CurrentSnapshot.GetText(),
+                    FilePath = filePath
                 };
                 _documentViewer.TextBufferCollection.Add(textBufferInfo);
             }
