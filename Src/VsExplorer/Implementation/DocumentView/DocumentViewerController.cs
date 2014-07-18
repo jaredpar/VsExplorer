@@ -37,7 +37,10 @@ namespace VsExplorer.Implementation.DocumentView
             var textBuffers = GetTextBuffersRecursive(_textView.TextBuffer);
             foreach (var textBuffer in textBuffers)
             {
-                var textBufferInfo = new TextBufferInfo() { Name = textBuffer.ContentType.TypeName };
+                var textBufferInfo = new TextBufferInfo() { 
+                    ContentType = textBuffer.ContentType.TypeName,
+                    Text = textBuffer.CurrentSnapshot.GetText()
+                };
                 _documentViewer.TextBufferCollection.Add(textBufferInfo);
             }
         }

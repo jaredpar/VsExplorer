@@ -8,7 +8,9 @@ namespace VsExplorer.Implementation.DocumentView
 {
     public sealed class TextBufferInfo
     {
-        public string Name { get; set; }
+        public string ContentType { get; set; }
+
+        public string Text { get; set; }
 
         public TextBufferInfo()
         {

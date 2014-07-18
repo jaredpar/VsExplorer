@@ -3,10 +3,15 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:l="clr-namespace:VsExplorer.Implementation.DocumentView"
              mc:Ignorable="d" 
              d:DesignHeight="300" 
              d:DesignWidth="300"
              DataContext="{Binding RelativeSource={RelativeSource Self}}">
+
+    <UserControl.Resources>
+        <l:SingleLineConverter x:Key="singleLineConverter" />
+    </UserControl.Resources>
 
     <StackPanel>
 
@@ -16,13 +21,22 @@
             <TextBlock Text="{Binding Path=DocumentRoles}" />
         </TextBlock>
 
-        <ListBox ItemsSource="{Binding TextBufferCollection}">
-            <ListBox.ItemTemplate>
-                <DataTemplate>
-                    <TextBlock Text="{Binding Path=Name}"/>
-                </DataTemplate>
-            </ListBox.ItemTemplate>
-        </ListBox>
+        <DataGrid
+            ItemsSource="{Binding TextBufferCollection}"
+            AutoGenerateColumns="False"
+            HeadersVisibility="Column">
 
+            <DataGrid.Columns>
+                <DataGridTextColumn
+                    Header="Content Type"
+                    Binding="{Binding Path=ContentType}" />
+
+                <DataGridTextColumn
+                    Header="Text"
+                    Width="*"
+                    Binding="{Binding Path=Text, Converter={StaticResource singleLineConverter}}" />
+            </DataGrid.Columns>
+            
+        </DataGrid>
     </StackPanel>
 </UserControl>
