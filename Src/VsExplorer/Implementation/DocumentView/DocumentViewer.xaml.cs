@@ -28,6 +28,8 @@ namespace VsExplorer.Implementation.DocumentView
 
         private readonly ObservableCollection<TextBufferInfo> _textBufferInfoCollection = new ObservableCollection<TextBufferInfo>();
 
+        public event EventHandler<TextBufferInfoEventArgs> OpenRawTextClicked;
+
         public string DocumentRoles
         {
             get { return (string)GetValue(DocumentRolesProperty); }
@@ -42,6 +44,19 @@ namespace VsExplorer.Implementation.DocumentView
         public DocumentViewer()
         {
             InitializeComponent();
+        }
+
+        private void OnOpenRawTextClick(object sender, EventArgs e)
+        {
+            var textBufferInfo = _textBufferInfoDataGrid.CurrentCell.Item as TextBufferInfo;
+            if (textBufferInfo != null)
+            {
+                var handlers = OpenRawTextClicked;
+                if (handlers != null)
+                {
+                    handlers(this, new TextBufferInfoEventArgs(textBufferInfo));
+                }
+            }
         }
     }
 }

@@ -25,4 +25,19 @@ namespace VsExplorer.Implementation.DocumentView
 
         }
     }
+
+    public sealed class TextBufferInfoEventArgs : EventArgs
+    {
+        private readonly TextBufferInfo _textBufferInfo;
+
+        public TextBufferInfo TextBufferInfo
+        {
+            get { return _textBufferInfo; }
+        }
+
+        public TextBufferInfoEventArgs(TextBufferInfo textBufferInfo)
+        {
+            _textBufferInfo = textBufferInfo;
+        }
+    }
 }
