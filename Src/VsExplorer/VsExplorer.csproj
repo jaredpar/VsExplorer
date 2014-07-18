@@ -155,6 +155,7 @@
     </COMReference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Implementation\DocumentView\DocumentViewerHostProvider.cs" />
     <Compile Include="Implementation\DocumentView\TextBufferInfo.cs" />
     <Compile Include="Implementation\DocumentView\DocumentViewer.xaml.cs">
       <DependentUpon>DocumentViewer.xaml</DependentUpon>

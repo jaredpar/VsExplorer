@@ -12,21 +12,31 @@ using System.Windows;
 
 namespace VsExplorer.Implementation.DocumentView
 {
-    [Export(typeof(IDocumentViewerHost))]
     internal sealed class DocumentViewerController : IDocumentViewerHost
     {
-        private DocumentViewer Create(ITextView textView)
-        {
-            var textBuffers = GetTextBuffersRecursive(textView.TextBuffer);
-            var control = new DocumentViewer();
+        private readonly DocumentViewer _documentViewer;
+        private ITextView _textView;
 
+        public DocumentViewerController()
+        {
+            _documentViewer = new DocumentViewer();
+        }
+
+        private void UpdateModel()
+        {
+            _documentViewer.TextBufferCollection.Clear();
+
+            if (_textView == null)
+            {
+                return;
+            }
+
+            var textBuffers = GetTextBuffersRecursive(_textView.TextBuffer);
             foreach (var textBuffer in textBuffers)
             {
                 var textBufferInfo = new TextBufferInfo() { Name = textBuffer.ContentType.TypeName };
-                control.TextBufferCollection.Add(textBufferInfo);
+                _documentViewer.TextBufferCollection.Add(textBufferInfo);
             }
-
-            return control;
         }
 
         private IEnumerable<ITextBuffer> GetTextBuffersRecursive(ITextBuffer textBuffer)
@@ -58,9 +68,22 @@ namespace VsExplorer.Implementation.DocumentView
 
         #region IDocumentViewerHost
 
-        UIElement IDocumentViewerHost.Create(ITextView textView)
+        UIElement IDocumentViewerHost.Visual
         {
-            return Create(textView);
+            get { return _documentViewer; }
+        }
+
+        ITextView IDocumentViewerHost.TextView
+        {
+            get { return _textView; }
+            set
+            {
+                if (_textView != value)
+                {
+                    _textView = value;
+                    UpdateModel();
+                }
+            }
         }
 
         #endregion

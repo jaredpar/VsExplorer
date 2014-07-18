@@ -10,11 +10,32 @@ namespace VsExplorer
 {
     internal interface IDocumentViewerHost
     {
-        UIElement Create(ITextView textView);
+        UIElement Visual { get; }
+
+        ITextView TextView { get; set; }
+    }
+
+    internal interface IDocumentViewerHostProvider
+    {
+        IDocumentViewerHost Create();
     }
 
     internal interface ITextAdapter
     {
         ITextView ActiveTextViewOpt { get; }
+
+        event EventHandler<ActiveTextViewChangedEventArgs> ActiveTextViewChanged;
+    }
+
+    internal sealed class ActiveTextViewChangedEventArgs : EventArgs
+    {
+        internal readonly ITextView OldTextViewOpt;
+        internal readonly ITextView NewTextViewOpt;
+
+        internal ActiveTextViewChangedEventArgs(ITextView oldTextViewOpt, ITextView newTextViewOpt)
+        {
+            OldTextViewOpt = oldTextViewOpt;
+            NewTextViewOpt = newTextViewOpt;
+        }
     }
 }
