@@ -36,6 +36,12 @@
             </DataGrid.ContextMenu>
 
             <DataGrid.Columns>
+
+                <DataGridTextColumn
+                    Header="Text Model"
+                    IsReadOnly="True"
+                    Binding="{Binding Path=TextModelFlags}" />
+
                 <DataGridTextColumn
                     Header="Content Type"
                     IsReadOnly="True"

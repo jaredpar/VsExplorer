@@ -4,14 +4,35 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.VisualStudio.Text;
 
 namespace VsExplorer.Implementation.DocumentView
 {
+    [Flags]
+    public enum TextModelFlags
+    {
+        None = 0x0,
+        Visual = 0x1,
+        Data = 0x2,
+        Document = 0x4,
+        Edit = 0x8,
+    }
+
     public sealed class TextBufferInfo
     {
+        private ITextBuffer _textBuffer;
+
         public string ContentType { get; set; }
 
-        public string Text { get; set; }
+        public ITextBuffer TextBuffer
+        {
+            get { return _textBuffer; }
+        }
+
+        public string Text
+        {
+            get { return _textBuffer.CurrentSnapshot.GetText(); }
+        }
 
         public string FileName
         {
@@ -20,9 +41,11 @@ namespace VsExplorer.Implementation.DocumentView
 
         public string FilePath { get; set; }
 
-        public TextBufferInfo()
-        {
+        public TextModelFlags TextModelFlags { get; set; }
 
+        public TextBufferInfo(ITextBuffer textBuffer)
+        {
+            _textBuffer = textBuffer;
         }
     }
 

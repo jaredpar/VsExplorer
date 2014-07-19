@@ -43,7 +43,7 @@ namespace VsExplorer.Implementation.DocumentView
 
             _documentViewer.DocumentRoles = String.Join(", ", _textView.Roles.ToArray());
 
-            var textBuffers = GetTextBuffersRecursive(_textView.TextBuffer);
+            var textBuffers = GetTextBuffersRecursive(_textView);
             foreach (var textBuffer in textBuffers)
             {
                 string filePath = "";
@@ -53,20 +53,49 @@ namespace VsExplorer.Implementation.DocumentView
                     filePath = textDocument.FilePath;
                 }
 
-                var textBufferInfo = new TextBufferInfo() { 
+                var textBufferInfo = new TextBufferInfo(textBuffer) {
                     ContentType = textBuffer.ContentType.TypeName,
-                    Text = textBuffer.CurrentSnapshot.GetText(),
-                    FilePath = filePath
+                    FilePath = filePath,
+                    TextModelFlags = GetTextModelFlags(_textView, textBuffer),
                 };
                 _documentViewer.TextBufferCollection.Add(textBufferInfo);
             }
         }
 
-        private IEnumerable<ITextBuffer> GetTextBuffersRecursive(ITextBuffer textBuffer)
+        private static TextModelFlags GetTextModelFlags(ITextView textView, ITextBuffer textBuffer)
+        {
+            var flags = TextModelFlags.None;
+            if (textView.TextViewModel.VisualBuffer == textBuffer)
+            {
+                flags |= TextModelFlags.Visual;
+            }
+
+            if (textView.TextViewModel.EditBuffer == textBuffer)
+            {
+                flags |= TextModelFlags.Edit;
+            }
+
+            if (textView.TextDataModel.DataBuffer == textBuffer)
+            {
+                flags |= TextModelFlags.Data;
+            }
+
+            if (textView.TextDataModel.DocumentBuffer == textBuffer)
+            {
+                flags |= TextModelFlags.Document;
+            }
+
+            return flags;
+        }
+
+        private static IEnumerable<ITextBuffer> GetTextBuffersRecursive(ITextView textview)
         {
             var foundSet = new HashSet<ITextBuffer>();
             var toVisitQueue = new Queue<ITextBuffer>();
-            toVisitQueue.Enqueue(textBuffer);
+            toVisitQueue.Enqueue(textview.TextViewModel.EditBuffer);
+            toVisitQueue.Enqueue(textview.TextViewModel.VisualBuffer);
+            toVisitQueue.Enqueue(textview.TextViewModel.DataBuffer);
+            toVisitQueue.Enqueue(textview.TextViewModel.DataModel.DocumentBuffer);
 
             while (toVisitQueue.Count > 0)
             {
