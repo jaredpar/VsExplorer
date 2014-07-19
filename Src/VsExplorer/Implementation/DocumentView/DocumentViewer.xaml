@@ -13,57 +13,61 @@
         <l:SingleLineConverter x:Key="singleLineConverter" />
     </UserControl.Resources>
 
-    <StackPanel>
+    <ScrollViewer VerticalScrollBarVisibility="Auto">
 
-        <!-- Display all of the roles here in a list -->
-        <TextBlock>
-            <TextBlock FontWeight="Bold">Document Roles: </TextBlock>
-            <TextBlock Text="{Binding Path=DocumentRoles}" />
-        </TextBlock>
+        <StackPanel Background="White">
 
-        <TextBlock FontWeight="Bold"  Text="Text Buffers" Margin="0,5,0,0" />
+            <!-- Display all of the roles here in a list -->
+            <TextBlock>
+                <TextBlock FontWeight="Bold">Document Roles: </TextBlock>
+                <TextBlock Text="{Binding Path=DocumentRoles}" />
+            </TextBlock>
 
-        <DataGrid
-            Name="_textBufferInfoDataGrid"
-            ItemsSource="{Binding TextBufferCollection}"
-            AutoGenerateColumns="False"
-            HeadersVisibility="Column">
+            <TextBlock FontWeight="Bold"  Text="Text Buffers" Margin="0,5,0,0" />
 
-            <DataGrid.ContextMenu>
-                <ContextMenu>
-                    <MenuItem Header="Open Raw Text" Click="OnOpenRawTextClick" />
-                </ContextMenu>
-            </DataGrid.ContextMenu>
+            <DataGrid
+                Name="_textBufferInfoDataGrid"
+                ItemsSource="{Binding TextBufferCollection}"
+                AutoGenerateColumns="False"
+                HeadersVisibility="Column">
 
-            <DataGrid.Columns>
+                <DataGrid.ContextMenu>
+                    <ContextMenu>
+                        <MenuItem Header="Open Raw Text" Click="OnOpenRawTextClick" />
+                    </ContextMenu>
+                </DataGrid.ContextMenu>
 
-                <DataGridTextColumn
-                    Header="Text Model"
-                    IsReadOnly="True"
-                    Binding="{Binding Path=TextModelFlags}" />
+                <DataGrid.Columns>
 
-                <DataGridTextColumn
-                    Header="Content Type"
-                    IsReadOnly="True"
-                    Binding="{Binding Path=ContentType}" />
+                    <DataGridTextColumn
+                        Header="Text Model"
+                        IsReadOnly="True"
+                        Binding="{Binding Path=TextModelFlags}" />
 
-                <DataGridTextColumn
-                    Header="File Name"
-                    IsReadOnly="True"
-                    Binding="{Binding Path=FileName}">
-                    <DataGridTextColumn.CellStyle>
-                        <Style TargetType="DataGridCell">
-                            <Setter Property="ToolTip" Value="{Binding Path=FilePath}" />
-                        </Style>
-                    </DataGridTextColumn.CellStyle>
-                </DataGridTextColumn>
+                    <DataGridTextColumn
+                        Header="Content Type"
+                        IsReadOnly="True"
+                        Binding="{Binding Path=ContentType}" />
 
-                <DataGridTextColumn
-                    Header="Text"
-                    IsReadOnly="True"
-                    Width="*"
-                    Binding="{Binding Path=Text, Converter={StaticResource singleLineConverter}}" />
-            </DataGrid.Columns>
-        </DataGrid>
-    </StackPanel>
+                    <DataGridTextColumn
+                        Header="File Name"
+                        IsReadOnly="True"
+                        Binding="{Binding Path=FileName}">
+                        <DataGridTextColumn.CellStyle>
+                            <Style TargetType="DataGridCell">
+                                <Setter Property="ToolTip" Value="{Binding Path=FilePath}" />
+                            </Style>
+                        </DataGridTextColumn.CellStyle>
+                    </DataGridTextColumn>
+
+                    <DataGridTextColumn
+                        Header="Text"
+                        IsReadOnly="True"
+                        Width="*"
+                        Binding="{Binding Path=Text, Converter={StaticResource singleLineConverter}}" />
+
+                </DataGrid.Columns>
+            </DataGrid>
+        </StackPanel>
+    </ScrollViewer>
 </UserControl>
