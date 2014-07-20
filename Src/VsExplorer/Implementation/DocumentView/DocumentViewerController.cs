@@ -43,7 +43,7 @@ namespace VsExplorer.Implementation.DocumentView
 
             _documentViewer.DocumentRoles = String.Join(", ", _textView.Roles.ToArray());
 
-            var textBuffers = GetTextBuffersRecursive(_textView);
+            var textBuffers = VsUtil.GetTextBuffersRecursive(_textView);
             foreach (var textBuffer in textBuffers)
             {
                 string filePath = "";
@@ -86,36 +86,6 @@ namespace VsExplorer.Implementation.DocumentView
             }
 
             return flags;
-        }
-
-        private static IEnumerable<ITextBuffer> GetTextBuffersRecursive(ITextView textview)
-        {
-            var foundSet = new HashSet<ITextBuffer>();
-            var toVisitQueue = new Queue<ITextBuffer>();
-            toVisitQueue.Enqueue(textview.TextViewModel.EditBuffer);
-            toVisitQueue.Enqueue(textview.TextViewModel.VisualBuffer);
-            toVisitQueue.Enqueue(textview.TextViewModel.DataBuffer);
-            toVisitQueue.Enqueue(textview.TextViewModel.DataModel.DocumentBuffer);
-
-            while (toVisitQueue.Count > 0)
-            {
-                var current = toVisitQueue.Dequeue();
-                if (!foundSet.Add(current))
-                {
-                    continue;
-                }
-
-                var projectionBuffer = current as IProjectionBuffer;
-                if (projectionBuffer != null)
-                {
-                    foreach (var inner in projectionBuffer.SourceBuffers)
-                    {
-                        toVisitQueue.Enqueue(inner);
-                    }
-                }
-            }
-
-            return foundSet;
         }
 
         private void OnOpenRawTextClicked(object sender, TextBufferInfoEventArgs e)

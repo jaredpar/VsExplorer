@@ -46,11 +46,56 @@ namespace VsExplorer.Implementation.Misc
                     return null;
                 }
 
-                return _vsEditorAdaptersFactoryService.GetWpfTextView(vsTextView);
+                var textView =  _vsEditorAdaptersFactoryService.GetWpfTextView(vsTextView);
+                if (textView == null)
+                {
+                    return null;
+                }
+
+                // If the view doesn't have aggregate focus then check to see if the peek window has focus
+                if (!textView.HasAggregateFocus)
+                {
+                    var peekTextView = QueryPeekWindow(vsTextView);
+                    if (peekTextView != null && peekTextView.HasAggregateFocus)
+                    {
+                        return peekTextView;
+                    }
+                }
+
+                return textView;
             }
             catch
             {
                 // GetWpfTextView can throw even for non-null values
+                return null;
+            }
+        }
+
+        private ITextView QueryPeekWindow(IVsTextView vsTextView)
+        {
+            var vsCodeWindow = VsUtil.GetCodeWindow(vsTextView) as IVsCodeWindow2;
+            if (vsCodeWindow == null)
+            {
+                return null;
+            }
+
+            IVsCodeWindow peekCodeWindow;
+            IVsTextView peekVsTextView;
+            if (ErrorHandler.Failed(vsCodeWindow.GetEmbeddedCodeWindow(0, out peekCodeWindow)) ||
+                peekCodeWindow == null ||
+                ErrorHandler.Failed(peekCodeWindow.GetLastActiveView(out peekVsTextView)) ||
+                peekVsTextView == null)
+            {
+                return null;
+            }
+
+            try
+            {
+                return _vsEditorAdaptersFactoryService.GetWpfTextView(peekVsTextView);
+            }
+            catch
+            {
+                // GetWpfTextView can throw for even non-null values
                 return null;
             }
         }
@@ -60,11 +105,31 @@ namespace VsExplorer.Implementation.Misc
             Dispatcher.CurrentDispatcher.BeginInvoke((Action)CheckForActiveTextViewChangeCore, DispatcherPriority.ApplicationIdle);
         }
 
+        private void OnTextViewFocusChanged(object sender, EventArgs e)
+        {
+            CheckForActiveTextViewChange();
+        }
+
         private void CheckForActiveTextViewChangeCore()
         {
             var textView = QueryActiveTextView();
             if (textView != _activeTextView)
             {
+                // There is no great global event to listen for when the peek window is 
+                // displayed.  Instead we just listen for changes to the focus as a clue
+                // to re-check the active IVsTextView
+                if (_activeTextView != null)
+                {
+                    _activeTextView.LostAggregateFocus -= OnTextViewFocusChanged;
+                    _activeTextView.GotAggregateFocus -= OnTextViewFocusChanged;
+                }
+
+                if (textView != null)
+                {
+                    textView.LostAggregateFocus += OnTextViewFocusChanged;
+                    textView.GotAggregateFocus += OnTextViewFocusChanged;
+                }
+
                 var args = new ActiveTextViewChangedEventArgs(_activeTextView, textView);
                 _activeTextView = textView;
 
