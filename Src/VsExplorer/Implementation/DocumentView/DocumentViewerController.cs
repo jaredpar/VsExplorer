@@ -35,6 +35,7 @@ namespace VsExplorer.Implementation.DocumentView
         {
             _documentViewer.TextBufferCollection.Clear();
             _documentViewer.DocumentRoles = string.Empty;
+            _documentViewer.DocumentPath = string.Empty;
 
             if (_textView == null)
             {
@@ -42,6 +43,16 @@ namespace VsExplorer.Implementation.DocumentView
             }
 
             _documentViewer.DocumentRoles = String.Join(", ", _textView.Roles.ToArray());
+
+            ITextDocument primaryTextDocument;
+            if (_textDocumentFactoryService.TryGetTextDocument(_textView.TextDataModel.DocumentBuffer, out primaryTextDocument))
+            {
+                _documentViewer.DocumentPath = primaryTextDocument.FilePath;
+            }
+            else
+            {
+                _documentViewer.DocumentPath = "{None}";
+            }
 
             var textBuffers = VsUtil.GetTextBuffersRecursive(_textView);
             foreach (var textBuffer in textBuffers)

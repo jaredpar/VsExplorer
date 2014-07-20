@@ -26,6 +26,11 @@ namespace VsExplorer.Implementation.DocumentView
             typeof(string),
             typeof(DocumentViewer));
 
+        public static readonly DependencyProperty DocumentPathProperty = DependencyProperty.Register(
+            "DocumentPath",
+            typeof(string),
+            typeof(DocumentViewer));
+
         private readonly ObservableCollection<TextBufferInfo> _textBufferInfoCollection = new ObservableCollection<TextBufferInfo>();
 
         public event EventHandler<TextBufferInfoEventArgs> OpenRawTextClicked;
@@ -34,6 +39,12 @@ namespace VsExplorer.Implementation.DocumentView
         {
             get { return (string)GetValue(DocumentRolesProperty); }
             set { SetValue(DocumentRolesProperty, value); }
+        }
+
+        public string DocumentPath
+        {
+            get { return (string)GetValue(DocumentPathProperty); }
+            set { SetValue(DocumentPathProperty, value); }
         }
 
         public ObservableCollection<TextBufferInfo> TextBufferCollection

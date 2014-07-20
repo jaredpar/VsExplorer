@@ -17,11 +17,18 @@
 
         <StackPanel Background="White">
 
+            <!-- Display the primary document backing the view  -->
+            <TextBlock Margin="0,5,0,0">
+                <TextBlock FontWeight="Bold">Document Path: </TextBlock>
+                <TextBlock Text="{Binding Path=DocumentPath}" />
+            </TextBlock>
+
             <!-- Display all of the roles here in a list -->
-            <TextBlock>
+            <TextBlock Margin="0,5,0,0">
                 <TextBlock FontWeight="Bold">Document Roles: </TextBlock>
                 <TextBlock Text="{Binding Path=DocumentRoles}" />
             </TextBlock>
+
 
             <TextBlock FontWeight="Bold"  Text="Text Buffers" Margin="0,5,0,0" />
 
