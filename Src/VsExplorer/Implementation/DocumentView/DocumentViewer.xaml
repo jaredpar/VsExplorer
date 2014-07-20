@@ -20,15 +20,14 @@
             <!-- Display the primary document backing the view  -->
             <TextBlock Margin="0,5,0,0">
                 <TextBlock FontWeight="Bold">Document Path: </TextBlock>
-                <TextBlock Text="{Binding Path=DocumentPath}" />
+                <TextBlock Text="{Binding Path=DocumentPath, Mode=OneWay}" />
             </TextBlock>
 
             <!-- Display all of the roles here in a list -->
             <TextBlock Margin="0,5,0,0">
                 <TextBlock FontWeight="Bold">Document Roles: </TextBlock>
-                <TextBlock Text="{Binding Path=DocumentRoles}" />
+                <TextBlock Text="{Binding Path=DocumentRoles, Mode=OneWay}" />
             </TextBlock>
-
 
             <TextBlock FontWeight="Bold"  Text="Text Buffers" Margin="0,5,0,0" />
 
@@ -49,17 +48,17 @@
                     <DataGridTextColumn
                         Header="Text Model"
                         IsReadOnly="True"
-                        Binding="{Binding Path=TextModelFlags}" />
+                        Binding="{Binding Path=TextModelFlags, Mode=OneWay}" />
 
                     <DataGridTextColumn
                         Header="Content Type"
                         IsReadOnly="True"
-                        Binding="{Binding Path=ContentType}" />
+                        Binding="{Binding Path=ContentType, Mode=OneWay}" />
 
                     <DataGridTextColumn
                         Header="File Name"
                         IsReadOnly="True"
-                        Binding="{Binding Path=FileName}">
+                        Binding="{Binding Path=FileName, Mode=OneWay}">
                         <DataGridTextColumn.CellStyle>
                             <Style TargetType="DataGridCell">
                                 <Setter Property="ToolTip" Value="{Binding Path=FilePath}" />
@@ -71,7 +70,7 @@
                         Header="Text"
                         IsReadOnly="True"
                         Width="*"
-                        Binding="{Binding Path=Text, Converter={StaticResource singleLineConverter}}" />
+                        Binding="{Binding Path=Text, Converter={StaticResource singleLineConverter}, Mode=OneWay}" />
 
                 </DataGrid.Columns>
             </DataGrid>
