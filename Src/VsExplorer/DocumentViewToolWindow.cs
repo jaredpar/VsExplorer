@@ -9,31 +9,23 @@ using Microsoft.VisualStudio.Shell.Interop;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.ComponentModelHost;
 using Microsoft.VisualStudio.Text.Editor;
+using System.Windows.Controls;
 
 namespace VsExplorer
 {
-    /// <summary>
-    /// This class implements the tool window exposed by this package and hosts a user control.
-    ///
-    /// In Visual Studio tool windows are composed of a frame (implemented by the shell) and a pane, 
-    /// usually implemented by the package implementer.
-    ///
-    /// This class derives from the ToolWindowPane class provided from the MPF in order to use its 
-    /// implementation of the IVsUIElementPane interface.
-    /// </summary>
     [Guid("1cd2ad05-d2d2-4151-958b-a1d13c547171")]
-    public class MyToolWindow : ToolWindowPane
+    public sealed class DocumentViewToolWindow : ToolWindowPane
     {
         private ITextAdapter _textAdapter;
         private IDocumentViewerHost _documentViewerHost;
 
-        public MyToolWindow() :
+        public DocumentViewToolWindow() :
             base(null)
         {
-            this.Caption = Resources.ToolWindowTitle;
-            this.BitmapResourceID = 301;
-            this.BitmapIndex = 1;
-            base.Content = new MyControl();
+            Caption = Resources.ToolWindowTitle;
+            BitmapResourceID = 301;
+            BitmapIndex = 1;
+            Content = new TextBlock();
         }
 
         protected override void Initialize()
