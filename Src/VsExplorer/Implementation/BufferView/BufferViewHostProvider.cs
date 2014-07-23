@@ -13,13 +13,13 @@ using System.Threading.Tasks;
 namespace VsExplorer.Implementation.BufferView
 {
     [Export(typeof(IBufferViewHostProvider))]
-    internal sealed class DocumentViewerHostProvider : IBufferViewHostProvider
+    internal sealed class BufferViewHostProvider : IBufferViewHostProvider
     {
         private readonly ITextDocumentFactoryService _textDocumentFactoryService;
         private readonly _DTE _dte;
 
         [ImportingConstructor]
-        internal DocumentViewerHostProvider(ITextDocumentFactoryService textDocumentFactoryService, SVsServiceProvider serviceProvider)
+        internal BufferViewHostProvider(ITextDocumentFactoryService textDocumentFactoryService, SVsServiceProvider serviceProvider)
         {
             _textDocumentFactoryService = textDocumentFactoryService;
             _dte = (_DTE)serviceProvider.GetService(typeof(SDTE));
@@ -27,7 +27,7 @@ namespace VsExplorer.Implementation.BufferView
 
         public IBufferViewHost Create()
         {
-            return new DocumentViewerController(_textDocumentFactoryService, _dte);
+            return new BufferViewController(_textDocumentFactoryService, _dte);
         }
     }
 }

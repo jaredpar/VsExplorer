@@ -19,17 +19,17 @@ namespace VsExplorer.Implementation.BufferView
     /// <summary>
     /// Interaction logic for DocumentViewer.xaml
     /// </summary>
-    public partial class DocumentViewer : UserControl
+    public partial class BufferViewDisplay : UserControl
     {
         public static readonly DependencyProperty DocumentRolesProperty = DependencyProperty.Register(
             "DocumentRoles",
             typeof(string),
-            typeof(DocumentViewer));
+            typeof(BufferViewDisplay));
 
         public static readonly DependencyProperty DocumentPathProperty = DependencyProperty.Register(
             "DocumentPath",
             typeof(string),
-            typeof(DocumentViewer));
+            typeof(BufferViewDisplay));
 
         private readonly ObservableCollection<TextBufferInfo> _textBufferInfoCollection = new ObservableCollection<TextBufferInfo>();
 
@@ -52,7 +52,7 @@ namespace VsExplorer.Implementation.BufferView
             get { return _textBufferInfoCollection; }
         }
 
-        public DocumentViewer()
+        public BufferViewDisplay()
         {
             InitializeComponent();
         }
