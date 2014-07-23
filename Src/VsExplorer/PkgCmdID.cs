@@ -4,11 +4,9 @@ using System;
 
 namespace VsExplorer
 {
-    static class PkgCmdIDList
+    internal static class PackageCommands
     {
-
-        public const uint cmdidDisplayDocumentViewer = 0x101;
-        public const uint cmdidDisplayTreeViewer = 0x102;
-
+        internal const int DisplayDocumentBufferView = 0x101;
+        internal const int DisplayDocumentTreeView = 0x102;
     };
 }

@@ -25,7 +25,7 @@
     </Menus>
 
     <Buttons>
-      <Button guid="guidVsExplorerCmdSet" id="cmdidDisplayDocumentViewer" priority="0x0100" type="Button">
+      <Button guid="guidVsExplorerCmdSet" id="cmdidDisplayDocumentBufferView" priority="0x0100" type="Button">
         <Parent guid="guidVsExplorerCmdSet" id="ExploreSubMenuGroup"/>
         <Icon guid="guidImages" id="bmpPic2" />
         <Strings>
@@ -33,7 +33,7 @@
         </Strings>
       </Button>
 
-      <Button guid="guidVsExplorerCmdSet" id="cmdidDisplayTreeView" priority="0x0100" type="Button">
+      <Button guid="guidVsExplorerCmdSet" id="cmdidDisplayDocumentTreeView" priority="0x0100" type="Button">
         <Parent guid="guidVsExplorerCmdSet" id="ExploreSubMenuGroup"/>
         <Icon guid="guidImages" id="bmpPic2" />
         <Strings>
@@ -52,8 +52,8 @@
     <GuidSymbol name="guidVsExplorerPkg" value="{7848ffb2-a704-43a2-9ef7-f0081cfc10d6}" />
     
     <GuidSymbol name="guidVsExplorerCmdSet" value="{0a91773a-2787-42ca-9616-61ecf4f8a502}">
-      <IDSymbol name="cmdidDisplayDocumentViewer" value="0x0101" />
-      <IDSymbol name="cmdidDisplayTreeView" value="0x0102" />
+      <IDSymbol name="cmdidDisplayDocumentBufferView" value="0x0101" />
+      <IDSymbol name="cmdidDisplayDocumentTreeView" value="0x0102" />
       <IDSymbol name="ExploreMenuGroup" value="0x1020" />
       <IDSymbol name="ExploreSubMenu" value="0x1021" />
       <IDSymbol name="ExploreSubMenuGroup" value="0x1022" />

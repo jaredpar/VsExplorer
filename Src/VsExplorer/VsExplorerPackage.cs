@@ -32,8 +32,8 @@ namespace VsExplorer
     // This attribute is needed to let the shell know that this package exposes some menus.
     [ProvideMenuResource("Menus.ctmenu", 1)]
     // This attribute registers a tool window exposed by this package.
-    [ProvideToolWindow(typeof(MyToolWindow))]
-    [ProvideToolWindow(typeof(ActiveTreeViewToolWindow))]
+    [ProvideToolWindow(typeof(DocumentBufferViewToolWindow))]
+    [ProvideToolWindow(typeof(DocumentTreeViewToolWindow))]
     [Guid(GuidList.guidVsExplorerPkgString)]
     public sealed class VsExplorerPackage : Package
     {
@@ -67,8 +67,8 @@ namespace VsExplorer
             var commandService = GetService(typeof(IMenuCommandService)) as OleMenuCommandService;
             if (commandService != null)
             {
-                AddDisplayToolWindow<MyToolWindow>(commandService, GuidList.guidVsExplorerCmdSet, (int)PkgCmdIDList.cmdidDisplayDocumentViewer);
-                AddDisplayToolWindow<ActiveTreeViewToolWindow>(commandService, GuidList.guidVsExplorerCmdSet, (int)PkgCmdIDList.cmdidDisplayTreeViewer);
+                AddDisplayToolWindow<DocumentBufferViewToolWindow>(commandService, GuidList.guidVsExplorerCmdSet, PackageCommands.DisplayDocumentBufferView);
+                AddDisplayToolWindow<DocumentTreeViewToolWindow>(commandService, GuidList.guidVsExplorerCmdSet, PackageCommands.DisplayDocumentTreeView);
             }
         }
 

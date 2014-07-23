@@ -14,15 +14,15 @@ using System.Windows.Controls;
 namespace VsExplorer
 {
     [Guid("9c8b8515-ec51-4717-800e-f265c5505c0e")]
-    public sealed class ActiveTreeViewToolWindow : ToolWindowPane
+    public sealed class DocumentTreeViewToolWindow : ToolWindowPane
     {
         private ITextAdapter _textAdapter;
         private ITreeViewHost _treeViewHost;
 
-        public ActiveTreeViewToolWindow() :
+        public DocumentTreeViewToolWindow() :
             base(null)
         {
-            this.Caption = "Active Tree View";
+            this.Caption = "Document Tree View";
             this.BitmapResourceID = 301;
             this.BitmapIndex = 1;
             base.Content = new TextBlock();
