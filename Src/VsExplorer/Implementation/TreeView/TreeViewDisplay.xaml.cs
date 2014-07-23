@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -20,6 +21,13 @@ namespace VsExplorer.Implementation.TreeView
     /// </summary>
     public partial class TreeViewDisplay : UserControl
     {
+        private readonly ObservableCollection<NamedBufferInfo> _namedBufferInfoCollection = new ObservableCollection<NamedBufferInfo>();
+
+        public ObservableCollection<NamedBufferInfo> NamedBufferInfoCollection
+        {
+            get { return _namedBufferInfoCollection; }
+        }
+
         public TreeViewDisplay()
         {
             InitializeComponent();

@@ -20,7 +20,15 @@ namespace VsExplorer.Implementation.TreeView
 
         private void UpdateDisplay()
         {
+            _treeViewDisplay.NamedBufferInfoCollection.Clear();
 
+            if (_textView == null)
+            {
+                return;
+            }
+
+            _treeViewDisplay.NamedBufferInfoCollection.Add(new NamedBufferInfo() { Name = "Visual" });
+            _treeViewDisplay.NamedBufferInfoCollection.Add(new NamedBufferInfo() { Name = "Edit" });
         }
 
         #region ITreeViewHost

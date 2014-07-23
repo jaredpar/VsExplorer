@@ -3,9 +3,18 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:VsExplorer.Implementation.TreeView"
              mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="300">
+             d:DesignHeight="300" 
+             d:DesignWidth="300"
+             DataContext="{Binding RelativeSource={RelativeSource Self}}">
     <StackPanel>
-        <TextBlock>Not Yet Implemented</TextBlock>
+        <TreeView ItemsSource="{Binding Path=NamedBufferInfoCollection}">
+            <TreeView.Resources>
+                <HierarchicalDataTemplate DataType="{x:Type local:NamedBufferInfo}">
+                    <TextBlock Text="{Binding Path=Name}" />
+                </HierarchicalDataTemplate>
+            </TreeView.Resources>
+        </TreeView>
     </StackPanel>
 </UserControl>
