@@ -11,7 +11,15 @@
     <StackPanel>
         <TreeView ItemsSource="{Binding Path=NamedBufferInfoCollection}">
             <TreeView.Resources>
-                <HierarchicalDataTemplate DataType="{x:Type local:NamedBufferInfo}">
+                <HierarchicalDataTemplate DataType="{x:Type local:NamedBufferInfo}" ItemsSource="{Binding Path=SourceBufferInfo.Children}">
+                    <TextBlock>
+                        <TextBlock Text="{Binding Path=Name}" />
+                        <TextBlock Text=": " />
+                        <TextBlock Text="{Binding Path=SourceBufferInfo.Name}" />
+                    </TextBlock>
+                </HierarchicalDataTemplate>
+
+                <HierarchicalDataTemplate DataType="{x:Type local:SourceBufferInfo}" ItemsSource="{Binding Path=Children}">
                     <TextBlock Text="{Binding Path=Name}" />
                 </HierarchicalDataTemplate>
             </TreeView.Resources>

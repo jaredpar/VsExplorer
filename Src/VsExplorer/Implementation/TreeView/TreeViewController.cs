@@ -1,6 +1,9 @@
-﻿using Microsoft.VisualStudio.Text.Editor;
+﻿using Microsoft.VisualStudio.Text;
+using Microsoft.VisualStudio.Text.Editor;
+using Microsoft.VisualStudio.Text.Projection;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -10,11 +13,13 @@ namespace VsExplorer.Implementation.TreeView
 {
     internal sealed class TreeViewController : ITreeViewHost
     {
+        private readonly ITextDocumentFactoryService _textDocumentFactoryService;
         private ITextView _textView;
         private TreeViewDisplay _treeViewDisplay;
 
-        internal TreeViewController()
+        internal TreeViewController(ITextDocumentFactoryService textDocumentFactoryService)
         {
+            _textDocumentFactoryService = textDocumentFactoryService;
             _treeViewDisplay = new TreeViewDisplay();
         }
 
@@ -27,8 +32,78 @@ namespace VsExplorer.Implementation.TreeView
                 return;
             }
 
-            _treeViewDisplay.NamedBufferInfoCollection.Add(new NamedBufferInfo() { Name = "Visual" });
-            _treeViewDisplay.NamedBufferInfoCollection.Add(new NamedBufferInfo() { Name = "Edit" });
+            var map = GetSourceBufferInfoMap(_textView);
+
+            Action<string, ITextBuffer> addOne = (name, textBuffer) =>
+            {
+                var sourceBufferInfo = map[textBuffer];
+                var namedBufferInfo = new NamedBufferInfo()
+                {
+                    Name = name,
+                    SourceBufferInfo = sourceBufferInfo
+                };
+
+                _treeViewDisplay.NamedBufferInfoCollection.Add(namedBufferInfo);
+            };
+
+            addOne("Document Buffer", _textView.TextViewModel.DataModel.DocumentBuffer);
+            addOne("Data Buffer", _textView.TextViewModel.DataBuffer);
+            addOne("Edit Buffer", _textView.TextViewModel.EditBuffer);
+            addOne("Visual Buffer", _textView.TextViewModel.VisualBuffer);
+        }
+
+        private Dictionary<ITextBuffer, SourceBufferInfo> GetSourceBufferInfoMap(ITextView textView)
+        {
+            var buffers = VsUtil.GetTextBuffersRecursive(textView);
+            var idSet = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+            var map = new Dictionary<ITextBuffer, SourceBufferInfo>();
+
+            int generator = 1;
+            foreach (var textBuffer in buffers)
+            {
+                string id = null;
+                ITextDocument textDocument;
+                if (_textDocumentFactoryService.TryGetTextDocument(textBuffer, out textDocument))
+                {
+                    string fileName = Path.GetFileName(textDocument.FilePath);
+                    if (!idSet.Contains(fileName))
+                    {
+                        id = fileName;
+                    }
+                }
+
+                if (id == null)
+                {
+                    do
+                    {
+                        id = generator.ToString();
+                        generator++;
+                    } while (idSet.Contains(id));
+                }
+
+                var sourceBufferInfo = new SourceBufferInfo(id, textBuffer);
+                map.Add(textBuffer, sourceBufferInfo);
+            }
+
+            UpdateChildren(map);
+            return map;
+        }
+
+        void UpdateChildren(Dictionary<ITextBuffer, SourceBufferInfo> map)
+        {
+            foreach (var sourceBufferInfo in map.Values)
+            {
+                var projectionBuffer = sourceBufferInfo.TextBuffer as IProjectionBufferBase;
+                if (projectionBuffer == null)
+                {
+                    continue;
+                }
+
+                foreach (var textBuffer in projectionBuffer.SourceBuffers)
+                {
+                    sourceBufferInfo.Children.Add(map[textBuffer]);
+                }
+            }
         }
 
         #region ITreeViewHost

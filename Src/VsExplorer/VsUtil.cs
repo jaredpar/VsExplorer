@@ -37,7 +37,7 @@ namespace VsExplorer
                     continue;
                 }
 
-                var projectionBuffer = current as IProjectionBuffer;
+                var projectionBuffer = current as IProjectionBufferBase;
                 if (projectionBuffer != null)
                 {
                     foreach (var inner in projectionBuffer.SourceBuffers)

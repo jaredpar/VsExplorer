@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.VisualStudio.Text;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.Linq;
@@ -10,9 +11,17 @@ namespace VsExplorer.Implementation.TreeView
     [Export(typeof(ITreeViewHostProvider))]
     internal sealed class TreeViewHostProvider : ITreeViewHostProvider
     {
+        private readonly ITextDocumentFactoryService _textDocumentFactoryService;
+        
+        [ImportingConstructor]
+        internal TreeViewHostProvider(ITextDocumentFactoryService textDocumentFactoryService)
+        {
+            _textDocumentFactoryService = textDocumentFactoryService;
+        }
+
         ITreeViewHost ITreeViewHostProvider.Create()
         {
-            return new TreeViewController();
+            return new TreeViewController(_textDocumentFactoryService);
         }
     }
 }
