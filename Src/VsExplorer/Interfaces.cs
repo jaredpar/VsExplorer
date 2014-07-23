@@ -20,6 +20,18 @@ namespace VsExplorer
         IDocumentViewerHost Create();
     }
 
+    internal interface ITreeViewHost
+    {
+        UIElement Visual { get; }
+
+        ITextView TextView { get; set; }
+    }
+
+    internal interface ITreeViewHostProvider
+    {
+        ITreeViewHost Create();
+    }
+
     internal interface ITextAdapter
     {
         ITextView ActiveTextViewOpt { get; }

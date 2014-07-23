@@ -33,6 +33,7 @@ namespace VsExplorer
     [ProvideMenuResource("Menus.ctmenu", 1)]
     // This attribute registers a tool window exposed by this package.
     [ProvideToolWindow(typeof(MyToolWindow))]
+    [ProvideToolWindow(typeof(ActiveTreeViewToolWindow))]
     [Guid(GuidList.guidVsExplorerPkgString)]
     public sealed class VsExplorerPackage : Package
     {
@@ -63,27 +64,26 @@ namespace VsExplorer
             _exportProvider = _componentModel.DefaultExportProvider;
 
             // Add our command handlers for menu (commands must exist in the .vsct file)
-            OleMenuCommandService mcs = GetService(typeof(IMenuCommandService)) as OleMenuCommandService;
-            if ( null != mcs )
+            var commandService = GetService(typeof(IMenuCommandService)) as OleMenuCommandService;
+            if (commandService != null)
             {
-                // Create the command for the tool window
-                CommandID toolwndCommandID = new CommandID(GuidList.guidVsExplorerCmdSet, (int)PkgCmdIDList.cmdidDisplayDocumentViewer);
-                MenuCommand menuToolWin = new MenuCommand(ShowToolWindow, toolwndCommandID);
-                mcs.AddCommand( menuToolWin );
+                AddDisplayToolWindow<MyToolWindow>(commandService, GuidList.guidVsExplorerCmdSet, (int)PkgCmdIDList.cmdidDisplayDocumentViewer);
+                AddDisplayToolWindow<ActiveTreeViewToolWindow>(commandService, GuidList.guidVsExplorerCmdSet, (int)PkgCmdIDList.cmdidDisplayTreeViewer);
             }
         }
 
-        /// <summary>
-        /// This function is called when the user clicks the menu item that shows the 
-        /// tool window. See the Initialize method to see how the menu item is associated to 
-        /// this function using the OleMenuCommandService service and the MenuCommand class.
-        /// </summary>
-        private void ShowToolWindow(object sender, EventArgs e)
+        private void AddDisplayToolWindow<T>(OleMenuCommandService commandService, Guid commandSet, int id)
+            where T : ToolWindowPane
         {
-            // Get the instance number 0 of this tool window. This window is single instance so this instance
-            // is actually the only one.
-            // The last flag is set to true so that if the tool window does not exists it will be created.
-            ToolWindowPane window = this.FindToolWindow(typeof(MyToolWindow), 0, true);
+            var commandID = new CommandID(commandSet, id);
+            var menuCommand = new MenuCommand((sender, e) => ShowToolWindow<T>(), commandID);
+            commandService.AddCommand(menuCommand);
+        }
+
+        private void ShowToolWindow<T>()
+            where T : ToolWindowPane
+        {
+            ToolWindowPane window = this.FindToolWindow(typeof(T), 0, true);
             if ((null == window) || (null == window.Frame))
             {
                 throw new NotSupportedException(Resources.CanNotCreateWindow);
@@ -91,9 +91,5 @@ namespace VsExplorer
             IVsWindowFrame windowFrame = (IVsWindowFrame)window.Frame;
             Microsoft.VisualStudio.ErrorHandler.ThrowOnFailure(windowFrame.Show());
         }
-
-        /////////////////////////////////////////////////////////////////////////////
-        // Overridden Package Implementation
-
     }
 }
