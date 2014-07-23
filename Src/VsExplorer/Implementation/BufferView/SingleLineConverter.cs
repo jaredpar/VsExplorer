@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Data;
 
-namespace VsExplorer.Implementation.DocumentView
+namespace VsExplorer.Implementation.BufferView
 {
     public sealed class SingleLineConverter : IValueConverter
     {

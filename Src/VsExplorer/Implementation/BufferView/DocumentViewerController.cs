@@ -14,9 +14,9 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 
-namespace VsExplorer.Implementation.DocumentView
+namespace VsExplorer.Implementation.BufferView
 {
-    internal sealed class DocumentViewerController : IDocumentViewerHost
+    internal sealed class DocumentViewerController : IBufferViewHost
     {
         private readonly ITextDocumentFactoryService _textDocumentFactoryService;
         private readonly _DTE _dte;
@@ -116,12 +116,12 @@ namespace VsExplorer.Implementation.DocumentView
 
         #region IDocumentViewerHost
 
-        UIElement IDocumentViewerHost.Visual
+        UIElement IBufferViewHost.Visual
         {
             get { return _documentViewer; }
         }
 
-        ITextView IDocumentViewerHost.TextView
+        ITextView IBufferViewHost.TextView
         {
             get { return _textView; }
             set

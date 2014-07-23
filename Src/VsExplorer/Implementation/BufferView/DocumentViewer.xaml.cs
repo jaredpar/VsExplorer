@@ -14,7 +14,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace VsExplorer.Implementation.DocumentView
+namespace VsExplorer.Implementation.BufferView
 {
     /// <summary>
     /// Interaction logic for DocumentViewer.xaml

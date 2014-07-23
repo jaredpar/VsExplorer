@@ -10,10 +10,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace VsExplorer.Implementation.DocumentView
+namespace VsExplorer.Implementation.BufferView
 {
-    [Export(typeof(IDocumentViewerHostProvider))]
-    internal sealed class DocumentViewerHostProvider : IDocumentViewerHostProvider
+    [Export(typeof(IBufferViewHostProvider))]
+    internal sealed class DocumentViewerHostProvider : IBufferViewHostProvider
     {
         private readonly ITextDocumentFactoryService _textDocumentFactoryService;
         private readonly _DTE _dte;
@@ -25,7 +25,7 @@ namespace VsExplorer.Implementation.DocumentView
             _dte = (_DTE)serviceProvider.GetService(typeof(SDTE));
         }
 
-        public IDocumentViewerHost Create()
+        public IBufferViewHost Create()
         {
             return new DocumentViewerController(_textDocumentFactoryService, _dte);
         }

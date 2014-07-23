@@ -164,13 +164,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DocumentTreeViewToolWindow.cs" />
-    <Compile Include="Implementation\DocumentView\DocumentViewerHostProvider.cs" />
-    <Compile Include="Implementation\DocumentView\SingleLineConverter.cs" />
-    <Compile Include="Implementation\DocumentView\TextBufferInfo.cs" />
-    <Compile Include="Implementation\DocumentView\DocumentViewer.xaml.cs">
+    <Compile Include="Implementation\BufferView\DocumentViewerHostProvider.cs" />
+    <Compile Include="Implementation\BufferView\SingleLineConverter.cs" />
+    <Compile Include="Implementation\BufferView\TextBufferInfo.cs" />
+    <Compile Include="Implementation\BufferView\DocumentViewer.xaml.cs">
       <DependentUpon>DocumentViewer.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Implementation\DocumentView\DocumentViewerController.cs" />
+    <Compile Include="Implementation\BufferView\DocumentViewerController.cs" />
     <Compile Include="Implementation\Misc\TextAdapter.cs" />
     <Compile Include="Implementation\TreeView\TreeViewController.cs" />
     <Compile Include="Implementation\TreeView\TreeViewDisplay.xaml.cs">
@@ -219,7 +219,7 @@
     <Content Include="Resources\Package.ico" />
   </ItemGroup>
   <ItemGroup>
-    <Page Include="Implementation\DocumentView\DocumentViewer.xaml">
+    <Page Include="Implementation\BufferView\DocumentViewer.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

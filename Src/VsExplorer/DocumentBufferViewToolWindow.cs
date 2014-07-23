@@ -17,7 +17,7 @@ namespace VsExplorer
     public class DocumentBufferViewToolWindow : ToolWindowPane
     {
         private ITextAdapter _textAdapter;
-        private IDocumentViewerHost _documentViewerHost;
+        private IBufferViewHost _bufferViewHost;
 
         public DocumentBufferViewToolWindow() :
             base(null)
@@ -34,18 +34,18 @@ namespace VsExplorer
 
             var componentModel = (IComponentModel)GetService(typeof(SComponentModel));
             var exportProvider = componentModel.DefaultExportProvider;
-            var documentViewerHostProvider = exportProvider.GetExportedValue<IDocumentViewerHostProvider>();
-            _documentViewerHost = documentViewerHostProvider.Create();
+            var bufferViewHostProvider = exportProvider.GetExportedValue<IBufferViewHostProvider>();
+            _bufferViewHost = bufferViewHostProvider.Create();
             _textAdapter = exportProvider.GetExportedValue<ITextAdapter>();
             _textAdapter.ActiveTextViewChanged += OnActiveTextViewChanged;
 
-            Content = _documentViewerHost.Visual;
-            _documentViewerHost.TextView = _textAdapter.ActiveTextViewOpt;
+            Content = _bufferViewHost.Visual;
+            _bufferViewHost.TextView = _textAdapter.ActiveTextViewOpt;
         }
 
         private void OnActiveTextViewChanged(object sender, ActiveTextViewChangedEventArgs e)
         {
-            _documentViewerHost.TextView = e.NewTextViewOpt;
+            _bufferViewHost.TextView = e.NewTextViewOpt;
         }
     }
 }
