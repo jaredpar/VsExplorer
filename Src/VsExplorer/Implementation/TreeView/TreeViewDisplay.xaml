@@ -8,8 +8,18 @@
              d:DesignHeight="300" 
              d:DesignWidth="300"
              DataContext="{Binding RelativeSource={RelativeSource Self}}">
-    <StackPanel>
-        <TreeView ItemsSource="{Binding Path=NamedBufferInfoCollection}">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="200" />
+            <ColumnDefinition Width="5" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+
+        <TreeView 
+            Grid.Column="0" 
+            Name="_treeView"
+            ItemsSource="{Binding Path=NamedBufferInfoCollection}"
+            SelectedItemChanged="OnTreeViewItemChanged" >
             <TreeView.Resources>
                 <HierarchicalDataTemplate DataType="{x:Type local:NamedBufferInfo}" ItemsSource="{Binding Path=SourceBufferInfo.Children}">
                     <TextBlock>
@@ -24,5 +34,13 @@
                 </HierarchicalDataTemplate>
             </TreeView.Resources>
         </TreeView>
-    </StackPanel>
+
+        <GridSplitter Grid.Column="1" HorizontalAlignment="Stretch" />
+
+        <StackPanel Grid.Column="2" DataContext="{Binding Path=TextBufferInfo}" >
+            <TextBlock Text="{Binding Path=Name}" />
+            <TextBlock Text="Content" />
+            <TextBlock Text="{Binding Path=Text}" />
+        </StackPanel>
+    </Grid>
 </UserControl>
