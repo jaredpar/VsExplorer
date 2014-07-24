@@ -38,6 +38,13 @@
         <GridSplitter Grid.Column="1" HorizontalAlignment="Stretch" />
 
         <StackPanel Grid.Column="2" DataContext="{Binding Path=TextBufferInfo}" >
+
+            <!-- Display the file path of the document -->
+            <TextBlock Visibility="{Binding Path=DocumentPathVisibility}">
+                <TextBlock Text="Document: " />
+                <TextBlock Text="{Binding Path=DocumentPath}" />
+            </TextBlock>
+
             <TextBlock Text="{Binding Path=Name}" />
             <TextBlock Text="Content" />
             <TextBlock Text="{Binding Path=Text}" />

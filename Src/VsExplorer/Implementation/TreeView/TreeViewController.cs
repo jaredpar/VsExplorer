@@ -66,11 +66,13 @@ namespace VsExplorer.Implementation.TreeView
             int generator = 1;
             foreach (var textBuffer in buffers)
             {
+                string documentPath = string.Empty;
                 string id = null;
                 ITextDocument textDocument;
                 if (_textDocumentFactoryService.TryGetTextDocument(textBuffer, out textDocument))
                 {
-                    string fileName = Path.GetFileName(textDocument.FilePath);
+                    documentPath = textDocument.FilePath;
+                    var fileName = Path.GetFileName(documentPath);
                     if (!idSet.Contains(fileName))
                     {
                         id = fileName;
@@ -81,12 +83,12 @@ namespace VsExplorer.Implementation.TreeView
                 {
                     do
                     {
-                        id = generator.ToString();
+                        id = string.Format("Unnamed {0}", generator.ToString());
                         generator++;
                     } while (idSet.Contains(id));
                 }
 
-                var sourceBufferInfo = new SourceBufferInfo(id, textBuffer);
+                var sourceBufferInfo = new SourceBufferInfo(textBuffer, id, documentPath);
                 map.Add(textBuffer, sourceBufferInfo);
             }
 

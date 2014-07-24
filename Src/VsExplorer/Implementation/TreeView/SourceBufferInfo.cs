@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.ComponentModel;
+using System.Windows;
 
 namespace VsExplorer.Implementation.TreeView
 {
@@ -13,6 +14,7 @@ namespace VsExplorer.Implementation.TreeView
     {
         private readonly ITextBuffer _textBuffer;
         private readonly string _name;
+        private readonly string _documentPath;
         private readonly ObservableCollection<SourceBufferInfo> _children = new ObservableCollection<SourceBufferInfo>();
         private event PropertyChangedEventHandler _propertyChanged;
 
@@ -36,6 +38,16 @@ namespace VsExplorer.Implementation.TreeView
             get { return _textBuffer != null ? _textBuffer.CurrentSnapshot.GetText() : ""; }
         }
 
+        public string DocumentPath
+        {
+            get { return _documentPath; }
+        }
+
+        public Visibility DocumentPathVisibility
+        {
+            get { return _documentPath.Length > 0 ? Visibility.Visible : Visibility.Collapsed; }
+        }
+
         public ITextBuffer TextBuffer
         {
             get { return _textBuffer; }
@@ -43,9 +55,10 @@ namespace VsExplorer.Implementation.TreeView
 
         public ObservableCollection<SourceBufferInfo> Children { get { return _children; } }
 
-        public SourceBufferInfo(string name, ITextBuffer textBuffer)
+        public SourceBufferInfo(ITextBuffer textBuffer, string name, string documentPath)
         {
             _name = name;
+            _documentPath = documentPath ?? "";
             _textBuffer = textBuffer;
             _textBuffer.Changed += OnTextBufferChanged;
         }
@@ -53,6 +66,7 @@ namespace VsExplorer.Implementation.TreeView
         private SourceBufferInfo()
         {
             _name = "";
+            _documentPath = "";
         }
 
         public void Close()
