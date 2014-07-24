@@ -35,19 +35,29 @@
             </TreeView.Resources>
         </TreeView>
 
-        <GridSplitter Grid.Column="1" HorizontalAlignment="Stretch" />
+        <GridSplitter 
+            Grid.Column="1"
+            HorizontalAlignment="Stretch" />
 
-        <StackPanel Grid.Column="2" DataContext="{Binding Path=TextBufferInfo}" >
+        <StackPanel 
+            Grid.Column="2">
 
-            <!-- Display the file path of the document -->
-            <TextBlock Visibility="{Binding Path=DocumentPathVisibility}">
-                <TextBlock Text="Document: " />
-                <TextBlock Text="{Binding Path=DocumentPath}" />
-            </TextBlock>
+            <StackPanel DataContext="{Binding Path=TextBufferInfo}" >
 
-            <TextBlock Text="{Binding Path=Name}" />
-            <TextBlock Text="Content" />
-            <TextBlock Text="{Binding Path=Text}" />
+                <!-- Display the file path of the document -->
+                <TextBlock Visibility="{Binding Path=DocumentPathVisibility}">
+                    <TextBlock Text="Document: " />
+                    <TextBlock Text="{Binding Path=DocumentPath}" />
+                </TextBlock>
+
+                <TextBlock Text="{Binding Path=Name}" />
+            </StackPanel>
+
+            <ScrollViewer 
+                HorizontalScrollBarVisibility="Auto"
+                VerticalScrollBarVisibility="Auto">
+                <ContentControl Content="{Binding Path=TextBufferDisplay}" />
+            </ScrollViewer>
         </StackPanel>
     </Grid>
 </UserControl>

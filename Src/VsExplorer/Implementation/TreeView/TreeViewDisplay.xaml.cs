@@ -27,6 +27,11 @@ namespace VsExplorer.Implementation.TreeView
             typeof(TreeViewDisplay),
             new PropertyMetadata(SourceBufferInfo.Empty));
 
+        public static readonly DependencyProperty TextBufferDisplayProperty = DependencyProperty.Register(
+            "TextBufferDisplay",
+            typeof(object),
+            typeof(TreeViewDisplay));
+
         private readonly ObservableCollection<NamedBufferInfo> _namedBufferInfoCollection = new ObservableCollection<NamedBufferInfo>();
 
         public ObservableCollection<NamedBufferInfo> NamedBufferInfoCollection
@@ -40,9 +45,31 @@ namespace VsExplorer.Implementation.TreeView
             set { SetValue(TextBufferInfoProperty, value); }
         }
 
+        public object TextBufferDisplay
+        {
+            get { return GetValue(TextBufferDisplayProperty); }
+            set { SetValue(TextBufferDisplayProperty, value); }
+        }
+
+        public event EventHandler TextBufferInfoChanged;
+
         public TreeViewDisplay()
         {
             InitializeComponent();
+        }
+
+        protected override void OnPropertyChanged(DependencyPropertyChangedEventArgs e)
+        {
+            base.OnPropertyChanged(e);
+
+            if (e.Property == TextBufferInfoProperty)
+            {
+                var handler = TextBufferInfoChanged;
+                if (handler != null)
+                {
+                    handler(this, EventArgs.Empty);
+                }
+            }
         }
 
         private void OnTreeViewItemChanged(object sender, EventArgs e)
