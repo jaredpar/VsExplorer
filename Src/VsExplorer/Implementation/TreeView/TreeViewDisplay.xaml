@@ -39,8 +39,11 @@
             Grid.Column="1"
             HorizontalAlignment="Stretch" />
 
-        <StackPanel 
-            Grid.Column="2">
+
+        <ScrollViewer 
+            Grid.Column="2"
+            HorizontalScrollBarVisibility="Auto"
+            VerticalScrollBarVisibility="Auto">
 
             <StackPanel DataContext="{Binding Path=TextBufferInfo}" >
 
@@ -51,13 +54,11 @@
                 </TextBlock>
 
                 <TextBlock Text="{Binding Path=Name}" />
-            </StackPanel>
 
-            <ScrollViewer 
-                HorizontalScrollBarVisibility="Auto"
-                VerticalScrollBarVisibility="Auto">
-                <ContentControl Content="{Binding Path=TextBufferDisplay}" />
-            </ScrollViewer>
-        </StackPanel>
+                <Separator />
+
+                <TextBlock Text="{Binding Path=Text}" />
+            </StackPanel>
+        </ScrollViewer>
     </Grid>
 </UserControl>

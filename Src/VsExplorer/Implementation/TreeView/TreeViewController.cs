@@ -16,17 +16,13 @@ namespace VsExplorer.Implementation.TreeView
     {
         private readonly ITextDocumentFactoryService _textDocumentFactoryService;
         private readonly List<SourceBufferInfo> _sourceBufferInfoCollection = new List<SourceBufferInfo>();
-        private readonly ITextEditorFactoryService _textEditorFactoryService;
         private ITextView _textView;
         private TreeViewDisplay _treeViewDisplay;
-        private IWpfTextViewHost _wpfTextViewHost;
 
-        internal TreeViewController(ITextEditorFactoryService textEditorFactoryService, ITextDocumentFactoryService textDocumentFactoryService)
+        internal TreeViewController(ITextDocumentFactoryService textDocumentFactoryService)
         {
-            _textEditorFactoryService = textEditorFactoryService;
             _textDocumentFactoryService = textDocumentFactoryService;
             _treeViewDisplay = new TreeViewDisplay();
-            _treeViewDisplay.TextBufferInfoChanged += OnTextBufferInfoChanged;
         }
 
         private void UpdateDisplay()
@@ -60,32 +56,6 @@ namespace VsExplorer.Implementation.TreeView
             addOne("Visual Buffer", _textView.TextViewModel.VisualBuffer);
 
             _sourceBufferInfoCollection.AddRange(map.Values);
-        }
-
-        private void ClearWpfTextViewHost()
-        {
-            if (_wpfTextViewHost != null)
-            {
-                _wpfTextViewHost.Close();
-                _wpfTextViewHost = null;
-            }
-        }
-
-        private void OnTextBufferInfoChanged(object sender, EventArgs e)
-        {
-            ClearWpfTextViewHost();
-
-            var textBufferInfo = _treeViewDisplay.TextBufferInfo;
-            if (textBufferInfo.IsEmpty)
-            {
-                _treeViewDisplay.TextBufferDisplay = new TextBlock();
-            }
-            else
-            {
-                var textViewRoleSet = _textEditorFactoryService.CreateTextViewRoleSet(PredefinedTextViewRoles.Interactive);
-                var wpfTextViewHost = _textEditorFactoryService.CreateTextView(textBufferInfo.TextBuffer, textViewRoleSet);
-                _treeViewDisplay.TextBufferDisplay = wpfTextViewHost.VisualElement;
-            }
         }
 
         private Dictionary<ITextBuffer, SourceBufferInfo> GetSourceBufferInfoMap(ITextView textView)
