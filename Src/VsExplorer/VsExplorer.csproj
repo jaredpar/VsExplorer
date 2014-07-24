@@ -172,7 +172,10 @@
     <Compile Include="Implementation\DocumentView\DocumentViewerController.cs" />
     <Compile Include="Implementation\Misc\TextAdapter.cs" />
     <Compile Include="Interfaces.cs" />
-    <Compile Include="DocumentViewToolWindow.cs" />
+    <Compile Include="MyControl.xaml.cs">
+      <DependentUpon>MyControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="MyToolWindow.cs" />
     <Compile Include="Guids.cs" />
     <Compile Include="Resources.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -214,6 +217,10 @@
   </ItemGroup>
   <ItemGroup>
     <Page Include="Implementation\DocumentView\DocumentViewer.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="MyControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
