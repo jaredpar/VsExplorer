@@ -174,7 +174,6 @@
     <Compile Include="Implementation\Misc\TextAdapter.cs" />
     <Compile Include="Implementation\TreeView\NamedBufferInfo.cs" />
     <Compile Include="Implementation\TreeView\SourceBufferInfo.cs" />
-    <Compile Include="Implementation\TreeView\TextBufferInfo.cs" />
     <Compile Include="Implementation\TreeView\TreeViewController.cs" />
     <Compile Include="Implementation\TreeView\TreeViewDisplay.xaml.cs">
       <DependentUpon>TreeViewDisplay.xaml</DependentUpon>

@@ -23,9 +23,9 @@ namespace VsExplorer.Implementation.TreeView
     {
         public static readonly DependencyProperty TextBufferInfoProperty = DependencyProperty.Register(
             "TextBufferInfo",
-            typeof(TextBufferInfo),
+            typeof(SourceBufferInfo),
             typeof(TreeViewDisplay),
-            new PropertyMetadata(TextBufferInfo.Empty));
+            new PropertyMetadata(SourceBufferInfo.Empty));
 
         private readonly ObservableCollection<NamedBufferInfo> _namedBufferInfoCollection = new ObservableCollection<NamedBufferInfo>();
 
@@ -34,9 +34,9 @@ namespace VsExplorer.Implementation.TreeView
             get { return _namedBufferInfoCollection; }
         }
 
-        public TextBufferInfo TextBufferInfo
+        public SourceBufferInfo TextBufferInfo
         {
-            get { return (TextBufferInfo)GetValue(TextBufferInfoProperty); }
+            get { return (SourceBufferInfo)GetValue(TextBufferInfoProperty); }
             set { SetValue(TextBufferInfoProperty, value); }
         }
 
@@ -57,18 +57,7 @@ namespace VsExplorer.Implementation.TreeView
                 }
             }
 
-            if (sourceBufferInfo != null)
-            {
-                TextBufferInfo = new TextBufferInfo()
-                {
-                    Name = sourceBufferInfo.Name,
-                    Text = sourceBufferInfo.TextBuffer.CurrentSnapshot.GetText()
-                };
-            }
-            else
-            {
-                TextBufferInfo = TextBufferInfo.Empty;
-            }
+            TextBufferInfo = sourceBufferInfo != null ? sourceBufferInfo : SourceBufferInfo.Empty;
         }
     }
 }

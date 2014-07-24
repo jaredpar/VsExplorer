@@ -14,6 +14,7 @@ namespace VsExplorer.Implementation.TreeView
     internal sealed class TreeViewController : ITreeViewHost
     {
         private readonly ITextDocumentFactoryService _textDocumentFactoryService;
+        private readonly List<SourceBufferInfo> _sourceBufferInfoCollection = new List<SourceBufferInfo>();
         private ITextView _textView;
         private TreeViewDisplay _treeViewDisplay;
 
@@ -26,6 +27,8 @@ namespace VsExplorer.Implementation.TreeView
         private void UpdateDisplay()
         {
             _treeViewDisplay.NamedBufferInfoCollection.Clear();
+            _sourceBufferInfoCollection.ForEach(x => x.Close());
+            _sourceBufferInfoCollection.Clear();
 
             if (_textView == null)
             {
@@ -50,6 +53,8 @@ namespace VsExplorer.Implementation.TreeView
             addOne("Data Buffer", _textView.TextViewModel.DataBuffer);
             addOne("Edit Buffer", _textView.TextViewModel.EditBuffer);
             addOne("Visual Buffer", _textView.TextViewModel.VisualBuffer);
+
+            _sourceBufferInfoCollection.AddRange(map.Values);
         }
 
         private Dictionary<ITextBuffer, SourceBufferInfo> GetSourceBufferInfoMap(ITextView textView)
