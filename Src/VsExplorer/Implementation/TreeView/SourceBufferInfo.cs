@@ -43,6 +43,11 @@ namespace VsExplorer.Implementation.TreeView
             get { return _documentPath; }
         }
 
+        public string ContentType
+        {
+            get { return _textBuffer != null ? _textBuffer.ContentType.DisplayName : ""; }
+        }
+
         public Visibility DocumentPathVisibility
         {
             get { return _documentPath.Length > 0 ? Visibility.Visible : Visibility.Collapsed; }

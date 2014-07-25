@@ -73,7 +73,7 @@ namespace VsExplorer.Implementation.TreeView
                 if (_textDocumentFactoryService.TryGetTextDocument(textBuffer, out textDocument))
                 {
                     documentPath = textDocument.FilePath;
-                    var fileName = Path.GetFileName(documentPath);
+                    var fileName = string.Format("{{{0}}}", Path.GetFileName(documentPath));
                     if (!idSet.Contains(fileName))
                     {
                         id = fileName;
@@ -84,7 +84,7 @@ namespace VsExplorer.Implementation.TreeView
                 {
                     do
                     {
-                        id = string.Format("Unnamed {0}", generator.ToString());
+                        id = string.Format("{{Unnamed {0}}}", generator.ToString());
                         generator++;
                     } while (idSet.Contains(id));
                 }

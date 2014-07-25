@@ -15,25 +15,29 @@
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
 
-        <TreeView 
-            Grid.Column="0" 
-            Name="_treeView"
-            ItemsSource="{Binding Path=NamedBufferInfoCollection}"
-            SelectedItemChanged="OnTreeViewItemChanged" >
-            <TreeView.Resources>
-                <HierarchicalDataTemplate DataType="{x:Type local:NamedBufferInfo}" ItemsSource="{Binding Path=SourceBufferInfo.Children}">
-                    <TextBlock>
-                        <TextBlock Text="{Binding Path=Name}" />
-                        <TextBlock Text=": " />
-                        <TextBlock Text="{Binding Path=SourceBufferInfo.Name}" />
-                    </TextBlock>
-                </HierarchicalDataTemplate>
+        <StackPanel Grid.Column="0">
+            <TextBlock Text="Text View Model" FontWeight="Bold" />
 
-                <HierarchicalDataTemplate DataType="{x:Type local:SourceBufferInfo}" ItemsSource="{Binding Path=Children}">
-                    <TextBlock Text="{Binding Path=Name}" />
-                </HierarchicalDataTemplate>
-            </TreeView.Resources>
-        </TreeView>
+            <TreeView 
+                Grid.Column="0" 
+                Name="_treeView"
+                ItemsSource="{Binding Path=NamedBufferInfoCollection}"
+                SelectedItemChanged="OnTreeViewItemChanged" >
+                <TreeView.Resources>
+                    <HierarchicalDataTemplate DataType="{x:Type local:NamedBufferInfo}" ItemsSource="{Binding Path=SourceBufferInfo.Children}">
+                        <TextBlock>
+                            <TextBlock Text="{Binding Path=Name}" FontWeight="Bold"/>
+                            <TextBlock Text=": " />
+                            <TextBlock Text="{Binding Path=SourceBufferInfo.Name}" />
+                        </TextBlock>
+                    </HierarchicalDataTemplate>
+
+                    <HierarchicalDataTemplate DataType="{x:Type local:SourceBufferInfo}" ItemsSource="{Binding Path=Children}">
+                        <TextBlock Text="{Binding Path=Name}" />
+                    </HierarchicalDataTemplate>
+                </TreeView.Resources>
+            </TreeView>
+        </StackPanel>
 
         <GridSplitter 
             Grid.Column="1"
@@ -47,13 +51,23 @@
 
             <StackPanel DataContext="{Binding Path=TextBufferInfo}" >
 
+                <!-- The identifier of the document -->
+                <TextBlock>
+                    <TextBlock Text="Identifier: " />
+                    <TextBlock Text="{Binding Path=Name}" />
+                </TextBlock>
+
                 <!-- Display the file path of the document -->
                 <TextBlock Visibility="{Binding Path=DocumentPathVisibility}">
-                    <TextBlock Text="Document: " />
+                    <TextBlock Text="Path: " />
                     <TextBlock Text="{Binding Path=DocumentPath}" />
                 </TextBlock>
 
-                <TextBlock Text="{Binding Path=Name}" />
+                <!-- The identifier of the document -->
+                <TextBlock>
+                    <TextBlock Text="Content Type: " />
+                    <TextBlock Text="{Binding Path=ContentType}" />
+                </TextBlock>
 
                 <Separator />
 
