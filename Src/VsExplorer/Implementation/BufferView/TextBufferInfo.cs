@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.Text;
 
-namespace VsExplorer.Implementation.DocumentView
+namespace VsExplorer.Implementation.BufferView
 {
     [Flags]
     public enum TextModelFlags

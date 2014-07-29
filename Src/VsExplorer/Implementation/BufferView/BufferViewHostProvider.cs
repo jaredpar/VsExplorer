@@ -9,25 +9,26 @@ using System.ComponentModel.Composition;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 
-namespace VsExplorer.Implementation.DocumentView
+namespace VsExplorer.Implementation.BufferView
 {
-    [Export(typeof(IDocumentViewerHostProvider))]
-    internal sealed class DocumentViewerHostProvider : IDocumentViewerHostProvider
+    [Export(typeof(IBufferViewHostProvider))]
+    internal sealed class BufferViewHostProvider : IBufferViewHostProvider
     {
         private readonly ITextDocumentFactoryService _textDocumentFactoryService;
         private readonly _DTE _dte;
 
         [ImportingConstructor]
-        internal DocumentViewerHostProvider(ITextDocumentFactoryService textDocumentFactoryService, SVsServiceProvider serviceProvider)
+        internal BufferViewHostProvider(ITextDocumentFactoryService textDocumentFactoryService, SVsServiceProvider serviceProvider)
         {
             _textDocumentFactoryService = textDocumentFactoryService;
             _dte = (_DTE)serviceProvider.GetService(typeof(SDTE));
         }
 
-        public IDocumentViewerHost Create()
+        public IBufferViewHost Create()
         {
-            return new DocumentViewerController(_textDocumentFactoryService, _dte);
+            return new BufferViewController(_textDocumentFactoryService, _dte);
         }
     }
 }

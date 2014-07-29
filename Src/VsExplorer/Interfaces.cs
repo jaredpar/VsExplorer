@@ -8,16 +8,28 @@ using System.Windows;
 
 namespace VsExplorer
 {
-    internal interface IDocumentViewerHost
+    internal interface IBufferViewHost
     {
         UIElement Visual { get; }
 
         ITextView TextView { get; set; }
     }
 
-    internal interface IDocumentViewerHostProvider
+    internal interface IBufferViewHostProvider
     {
-        IDocumentViewerHost Create();
+        IBufferViewHost Create();
+    }
+
+    internal interface ITreeViewHost
+    {
+        UIElement Visual { get; }
+
+        ITextView TextView { get; set; }
+    }
+
+    internal interface ITreeViewHostProvider
+    {
+        ITreeViewHost Create();
     }
 
     internal interface ITextAdapter

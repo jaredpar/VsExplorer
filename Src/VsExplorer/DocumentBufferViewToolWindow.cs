@@ -9,31 +9,23 @@ using Microsoft.VisualStudio.Shell.Interop;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.ComponentModelHost;
 using Microsoft.VisualStudio.Text.Editor;
+using System.Windows.Controls;
 
 namespace VsExplorer
 {
-    /// <summary>
-    /// This class implements the tool window exposed by this package and hosts a user control.
-    ///
-    /// In Visual Studio tool windows are composed of a frame (implemented by the shell) and a pane, 
-    /// usually implemented by the package implementer.
-    ///
-    /// This class derives from the ToolWindowPane class provided from the MPF in order to use its 
-    /// implementation of the IVsUIElementPane interface.
-    /// </summary>
     [Guid("1cd2ad05-d2d2-4151-958b-a1d13c547171")]
-    public class MyToolWindow : ToolWindowPane
+    public class DocumentBufferViewToolWindow : ToolWindowPane
     {
         private ITextAdapter _textAdapter;
-        private IDocumentViewerHost _documentViewerHost;
+        private IBufferViewHost _bufferViewHost;
 
-        public MyToolWindow() :
+        public DocumentBufferViewToolWindow() :
             base(null)
         {
             this.Caption = Resources.ToolWindowTitle;
             this.BitmapResourceID = 301;
             this.BitmapIndex = 1;
-            base.Content = new MyControl();
+            base.Content = new TextBlock();
         }
 
         protected override void Initialize()
@@ -42,18 +34,18 @@ namespace VsExplorer
 
             var componentModel = (IComponentModel)GetService(typeof(SComponentModel));
             var exportProvider = componentModel.DefaultExportProvider;
-            var documentViewerHostProvider = exportProvider.GetExportedValue<IDocumentViewerHostProvider>();
-            _documentViewerHost = documentViewerHostProvider.Create();
+            var bufferViewHostProvider = exportProvider.GetExportedValue<IBufferViewHostProvider>();
+            _bufferViewHost = bufferViewHostProvider.Create();
             _textAdapter = exportProvider.GetExportedValue<ITextAdapter>();
             _textAdapter.ActiveTextViewChanged += OnActiveTextViewChanged;
 
-            Content = _documentViewerHost.Visual;
-            _documentViewerHost.TextView = _textAdapter.ActiveTextViewOpt;
+            Content = _bufferViewHost.Visual;
+            _bufferViewHost.TextView = _textAdapter.ActiveTextViewOpt;
         }
 
         private void OnActiveTextViewChanged(object sender, ActiveTextViewChangedEventArgs e)
         {
-            _documentViewerHost.TextView = e.NewTextViewOpt;
+            _bufferViewHost.TextView = e.NewTextViewOpt;
         }
     }
 }

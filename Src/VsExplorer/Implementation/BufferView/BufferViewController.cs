@@ -14,44 +14,44 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 
-namespace VsExplorer.Implementation.DocumentView
+namespace VsExplorer.Implementation.BufferView
 {
-    internal sealed class DocumentViewerController : IDocumentViewerHost
+    internal sealed class BufferViewController : IBufferViewHost
     {
         private readonly ITextDocumentFactoryService _textDocumentFactoryService;
         private readonly _DTE _dte;
-        private readonly DocumentViewer _documentViewer;
+        private readonly BufferViewDisplay _bufferViewDisplay;
         private ITextView _textView;
 
-        public DocumentViewerController(ITextDocumentFactoryService textDocumentFactoryService, _DTE dte)
+        public BufferViewController(ITextDocumentFactoryService textDocumentFactoryService, _DTE dte)
         {
             _textDocumentFactoryService = textDocumentFactoryService;
             _dte = dte;
-            _documentViewer = new DocumentViewer();
-            _documentViewer.OpenRawTextClicked += OnOpenRawTextClicked;
+            _bufferViewDisplay = new BufferViewDisplay();
+            _bufferViewDisplay.OpenRawTextClicked += OnOpenRawTextClicked;
         }
 
         private void UpdateModel()
         {
-            _documentViewer.TextBufferCollection.Clear();
-            _documentViewer.DocumentRoles = string.Empty;
-            _documentViewer.DocumentPath = string.Empty;
+            _bufferViewDisplay.TextBufferCollection.Clear();
+            _bufferViewDisplay.DocumentRoles = string.Empty;
+            _bufferViewDisplay.DocumentPath = string.Empty;
 
             if (_textView == null)
             {
                 return;
             }
 
-            _documentViewer.DocumentRoles = String.Join(", ", _textView.Roles.ToArray());
+            _bufferViewDisplay.DocumentRoles = String.Join(", ", _textView.Roles.ToArray());
 
             ITextDocument primaryTextDocument;
             if (_textDocumentFactoryService.TryGetTextDocument(_textView.TextDataModel.DocumentBuffer, out primaryTextDocument))
             {
-                _documentViewer.DocumentPath = primaryTextDocument.FilePath;
+                _bufferViewDisplay.DocumentPath = primaryTextDocument.FilePath;
             }
             else
             {
-                _documentViewer.DocumentPath = "{None}";
+                _bufferViewDisplay.DocumentPath = "{None}";
             }
 
             var textBuffers = VsUtil.GetTextBuffersRecursive(_textView);
@@ -69,7 +69,7 @@ namespace VsExplorer.Implementation.DocumentView
                     FilePath = filePath,
                     TextModelFlags = GetTextModelFlags(_textView, textBuffer),
                 };
-                _documentViewer.TextBufferCollection.Add(textBufferInfo);
+                _bufferViewDisplay.TextBufferCollection.Add(textBufferInfo);
             }
         }
 
@@ -116,12 +116,12 @@ namespace VsExplorer.Implementation.DocumentView
 
         #region IDocumentViewerHost
 
-        UIElement IDocumentViewerHost.Visual
+        UIElement IBufferViewHost.Visual
         {
-            get { return _documentViewer; }
+            get { return _bufferViewDisplay; }
         }
 
-        ITextView IDocumentViewerHost.TextView
+        ITextView IBufferViewHost.TextView
         {
             get { return _textView; }
             set
