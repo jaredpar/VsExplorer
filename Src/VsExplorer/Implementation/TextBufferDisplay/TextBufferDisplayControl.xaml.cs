@@ -32,9 +32,20 @@ namespace VsExplorer.Implementation.TextBufferDisplay
             set { SetValue(TextBufferInfoProperty, value); }
         }
 
+        public event EventHandler OpenRawTextClicked;
+
         public TextBufferDisplayControl()
         {
             InitializeComponent();
+        }
+
+        private void OnOpenRawTextClicked(object sender, EventArgs e)
+        {
+            var list = OpenRawTextClicked;
+            if (list != null)
+            {
+                list(this, EventArgs.Empty);
+            }
         }
     }
 }

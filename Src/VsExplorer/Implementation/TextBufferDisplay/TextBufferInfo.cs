@@ -17,6 +17,7 @@ namespace VsExplorer.Implementation.TextBufferDisplay
         private readonly string _documentPath;
         private readonly string _contentType;
         private readonly ObservableCollection<TextBufferInfo> _sourceBuffers;
+        private readonly ObservableCollection<string> _roles;
         private string _text;
         private event PropertyChangedEventHandler _propertyChanged;
 
@@ -65,6 +66,21 @@ namespace VsExplorer.Implementation.TextBufferDisplay
             get { return _sourceBuffers.Count == 0 ? Visibility.Collapsed : Visibility.Visible; }
         }
 
+        public ObservableCollection<string> Roles
+        {
+            get { return _roles; }
+        }
+
+        public string RolesText
+        {
+            get { return string.Join(",", _roles); }
+        }
+
+        public Visibility RolesVisibility
+        {
+            get { return _roles.Count == 0 ? Visibility.Collapsed : Visibility.Visible; }
+        }
+
         public TextBufferInfo(string name, string documentPath, string contentType, string text)
         {
             _name = name;
@@ -72,6 +88,7 @@ namespace VsExplorer.Implementation.TextBufferDisplay
             _contentType = contentType;
             _text = text;
             _sourceBuffers = new ObservableCollection<TextBufferInfo>();
+            _roles = new ObservableCollection<string>();
         }
 
         private void OnPropertyChanged(string name)

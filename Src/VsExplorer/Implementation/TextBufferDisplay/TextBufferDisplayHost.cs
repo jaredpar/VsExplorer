@@ -1,7 +1,10 @@
-﻿using Microsoft.VisualStudio.Text;
+﻿using EnvDTE;
+using Microsoft.VisualStudio.Text;
 using Microsoft.VisualStudio.Text.Projection;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -14,12 +17,15 @@ namespace VsExplorer.Implementation.TextBufferDisplay
     {
         private readonly ITextDocumentFactoryService _textDocumentFactoryService;
         private readonly TextBufferDisplayControl _textBufferDisplayControl;
+        private readonly _DTE _dte;
         private ITextBuffer _textBuffer;
 
-        internal TextBufferDisplayHost(ITextDocumentFactoryService textDocumentFactoryService)
+        internal TextBufferDisplayHost(ITextDocumentFactoryService textDocumentFactoryService, _DTE dte)
         {
             _textDocumentFactoryService = textDocumentFactoryService;
             _textBufferDisplayControl = new TextBufferDisplayControl();
+            _textBufferDisplayControl.OpenRawTextClicked += OnOpenRawTextClicked;
+            _dte = dte;
         }
 
         private void UpdateTextBuffer(ITextBuffer textBuffer)
@@ -87,6 +93,21 @@ namespace VsExplorer.Implementation.TextBufferDisplay
             _textBufferDisplayControl.TextBufferInfo.Text = _textBuffer.CurrentSnapshot.GetText();
         }
 
+        private void OnOpenRawTextClicked(object sender, EventArgs e)
+        {
+            try
+            {
+                var filePath = Path.GetTempFileName();
+                File.WriteAllText(filePath, _textBufferDisplayControl.TextBufferInfo.Text);
+
+                _dte.ItemOperations.OpenFile(filePath);
+            }
+            catch (Exception ex)
+            {
+                Debug.Fail(ex.Message);
+            }
+        }
+
         #region ITextBufferDisplayHost
 
         UIElement ITextBufferDisplayHost.Visual
@@ -98,6 +119,11 @@ namespace VsExplorer.Implementation.TextBufferDisplay
         {
             get { return _textBuffer; }
             set { UpdateTextBuffer(value); }
+        }
+
+        ObservableCollection<string> ITextBufferDisplayHost.Roles
+        {
+            get { return _textBufferDisplayControl.TextBufferInfo.Roles; }
         }
 
         #endregion

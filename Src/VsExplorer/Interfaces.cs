@@ -2,6 +2,7 @@
 using Microsoft.VisualStudio.Text.Editor;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -33,9 +34,15 @@ namespace VsExplorer
         ITreeViewHost Create();
     }
 
+    /// <summary>
+    /// The host for displaying a control that represents an ITextBuffer
+    /// </summary>
     internal interface ITextBufferDisplayHost
     {
         UIElement Visual { get; }
+
+        ObservableCollection<string> Roles { get;  }
+
         ITextBuffer TextBuffer { get; set; }
     }
 
