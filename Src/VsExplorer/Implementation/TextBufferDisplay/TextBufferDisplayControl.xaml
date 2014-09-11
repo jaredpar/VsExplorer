@@ -14,24 +14,25 @@
         <StackPanel DataContext="{Binding Path=TextBufferInfo}" >
             <!-- The identifier of the document -->
             <TextBlock>
-                <TextBlock Text="Identifier: " />
+                <TextBlock Text="Identifier: " FontWeight="Bold" />
                 <TextBlock Text="{Binding Path=Name}" />
             </TextBlock>
 
             <!-- Display the file path of the document -->
             <TextBlock Visibility="{Binding Path=DocumentPathVisibility}">
-                <TextBlock Text="Path: " />
+                <TextBlock Text="Path: "  FontWeight="Bold" />
                 <TextBlock Text="{Binding Path=DocumentPath}" />
             </TextBlock>
 
             <!-- The identifier of the document -->
             <TextBlock>
-                <TextBlock Text="Content Type: " />
+                <TextBlock Text="Content Type: " FontWeight="Bold"/>
                 <TextBlock Text="{Binding Path=ContentType}" />
             </TextBlock>
 
             <Separator />
 
+            <TextBlock Text="Text" FontWeight="Bold" />
             <TextBlock Text="{Binding Path=Text}" />
         </StackPanel>
     </ScrollViewer>
