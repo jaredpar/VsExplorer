@@ -121,9 +121,10 @@ namespace VsExplorer.Implementation.TextBufferDisplay
             set { UpdateTextBuffer(value); }
         }
 
-        ObservableCollection<string> ITextBufferDisplayHost.Roles
+        string ITextBufferDisplayHost.Roles
         {
             get { return _textBufferDisplayControl.TextBufferInfo.Roles; }
+            set { _textBufferDisplayControl.TextBufferInfo.Roles = value; }
         }
 
         #endregion

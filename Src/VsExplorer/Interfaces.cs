@@ -41,7 +41,7 @@ namespace VsExplorer
     {
         UIElement Visual { get; }
 
-        ObservableCollection<string> Roles { get;  }
+        string Roles { get; set; }
 
         ITextBuffer TextBuffer { get; set; }
     }

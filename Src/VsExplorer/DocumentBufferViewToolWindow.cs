@@ -17,7 +17,7 @@ namespace VsExplorer
     public class DocumentBufferViewToolWindow : ToolWindowPane
     {
         private ITextAdapter _textAdapter;
-        private IBufferViewHost _bufferViewHost;
+        private ITextBufferDisplayHost _textBufferDisplayHost;
 
         public DocumentBufferViewToolWindow() :
             base(null)
@@ -34,18 +34,31 @@ namespace VsExplorer
 
             var componentModel = (IComponentModel)GetService(typeof(SComponentModel));
             var exportProvider = componentModel.DefaultExportProvider;
-            var bufferViewHostProvider = exportProvider.GetExportedValue<IBufferViewHostProvider>();
-            _bufferViewHost = bufferViewHostProvider.Create();
+            var textBufferDisplayHostProvider = exportProvider.GetExportedValue<ITextBufferDisplayHostProvider>();
+            _textBufferDisplayHost = textBufferDisplayHostProvider.Create();
             _textAdapter = exportProvider.GetExportedValue<ITextAdapter>();
             _textAdapter.ActiveTextViewChanged += OnActiveTextViewChanged;
 
-            Content = _bufferViewHost.Visual;
-            _bufferViewHost.TextView = _textAdapter.ActiveTextViewOpt;
+            Content = _textBufferDisplayHost.Visual;
+            Update(_textAdapter.ActiveTextViewOpt);
         }
 
         private void OnActiveTextViewChanged(object sender, ActiveTextViewChangedEventArgs e)
         {
-            _bufferViewHost.TextView = e.NewTextViewOpt;
+            Update(e.NewTextViewOpt);
+        }
+
+        private void Update(ITextView textView)
+        {
+            if (textView == null)
+            {
+                _textBufferDisplayHost.TextBuffer = null;
+            }
+            else
+            {
+                _textBufferDisplayHost.TextBuffer = textView.TextBuffer;
+                _textBufferDisplayHost.Roles = string.Join(",", textView.Roles);
+            }
         }
     }
 }

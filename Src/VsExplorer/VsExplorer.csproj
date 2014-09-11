@@ -164,13 +164,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DocumentTreeViewToolWindow.cs" />
-    <Compile Include="Implementation\BufferView\BufferViewHostProvider.cs" />
-    <Compile Include="Implementation\BufferView\SingleLineConverter.cs" />
-    <Compile Include="Implementation\BufferView\TextBufferInfo.cs" />
-    <Compile Include="Implementation\BufferView\BufferViewDisplay.xaml.cs">
-      <DependentUpon>BufferViewDisplay.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Implementation\BufferView\BufferViewController.cs" />
     <Compile Include="Implementation\Misc\TextAdapter.cs" />
     <Compile Include="Implementation\TextBufferDisplay\TextBufferDisplayControl.xaml.cs">
       <DependentUpon>TextBufferDisplayControl.xaml</DependentUpon>
@@ -227,10 +220,6 @@
     <Content Include="Resources\Package.ico" />
   </ItemGroup>
   <ItemGroup>
-    <Page Include="Implementation\BufferView\BufferViewDisplay.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="Implementation\TextBufferDisplay\TextBufferDisplayControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

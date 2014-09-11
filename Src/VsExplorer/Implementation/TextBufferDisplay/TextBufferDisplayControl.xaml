@@ -52,7 +52,7 @@
             <!-- The Roles of the buffer -->
             <TextBlock Visibility="{Binding Path=RolesVisibility}">
                 <TextBlock Text="Roles: " FontWeight="Bold" />
-                <TextBlock Text="{Binding Path=RolesText}" />
+                <TextBlock Text="{Binding Path=Roles}" />
             </TextBlock>
 
             <!-- Source Buffers participating in this document -->
