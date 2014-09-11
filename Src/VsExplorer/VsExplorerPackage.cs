@@ -34,6 +34,7 @@ namespace VsExplorer
     // This attribute registers a tool window exposed by this package.
     [ProvideToolWindow(typeof(DocumentBufferViewToolWindow))]
     [ProvideToolWindow(typeof(DocumentTreeViewToolWindow))]
+    [ProvideToolWindow(typeof(DocumentTagToolWindow))]
     [Guid(GuidList.guidVsExplorerPkgString)]
     public sealed class VsExplorerPackage : Package
     {
@@ -69,6 +70,7 @@ namespace VsExplorer
             {
                 AddDisplayToolWindow<DocumentBufferViewToolWindow>(commandService, GuidList.guidVsExplorerCmdSet, PackageCommands.DisplayDocumentBufferView);
                 AddDisplayToolWindow<DocumentTreeViewToolWindow>(commandService, GuidList.guidVsExplorerCmdSet, PackageCommands.DisplayDocumentTreeView);
+                AddDisplayToolWindow<DocumentTagToolWindow>(commandService, GuidList.guidVsExplorerCmdSet, PackageCommands.DisplayDocumentTagView);
             }
         }
 

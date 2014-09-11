@@ -25,7 +25,7 @@ namespace VsExplorer.Implementation.TextBufferDisplay
             _dte = (_DTE)vsServiceProvider.GetService(typeof(SDTE));
         }
 
-        public ITextBufferDisplayHost Create()
+        ITextBufferDisplayHost ITextBufferDisplayHostProvider.Create()
         {
             return new TextBufferDisplayHost(_textDocumentFactoryService, _dte);
         }

@@ -10,18 +10,6 @@ using System.Windows;
 
 namespace VsExplorer
 {
-    internal interface IBufferViewHost
-    {
-        UIElement Visual { get; }
-
-        ITextView TextView { get; set; }
-    }
-
-    internal interface IBufferViewHostProvider
-    {
-        IBufferViewHost Create();
-    }
-
     internal interface ITreeViewHost
     {
         UIElement Visual { get; }
@@ -49,6 +37,18 @@ namespace VsExplorer
     internal interface ITextBufferDisplayHostProvider
     {
         ITextBufferDisplayHost Create();
+    }
+
+    internal interface ITagDisplayHost
+    {
+        UIElement Visual { get; }
+
+        ITextBuffer TextBuffer { get; set; }
+    }
+
+    internal interface ITagDisplayHostProvider
+    {
+        ITagDisplayHost Create();
     }
 
     internal interface ITextAdapter

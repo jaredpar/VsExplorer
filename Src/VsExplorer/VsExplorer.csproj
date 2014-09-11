@@ -163,8 +163,15 @@
     </COMReference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DocumentTagToolWindow.cs" />
     <Compile Include="DocumentTreeViewToolWindow.cs" />
     <Compile Include="Implementation\Misc\TextAdapter.cs" />
+    <Compile Include="Implementation\TagDisplay\Model.cs" />
+    <Compile Include="Implementation\TagDisplay\TagDisplayControl.xaml.cs">
+      <DependentUpon>TagDisplayControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Implementation\TagDisplay\TagDisplayHost.cs" />
+    <Compile Include="Implementation\TagDisplay\TagDisplayHostProvider.cs" />
     <Compile Include="Implementation\TextBufferDisplay\TextBufferDisplayControl.xaml.cs">
       <DependentUpon>TextBufferDisplayControl.xaml</DependentUpon>
     </Compile>
@@ -220,6 +227,10 @@
     <Content Include="Resources\Package.ico" />
   </ItemGroup>
   <ItemGroup>
+    <Page Include="Implementation\TagDisplay\TagDisplayControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Implementation\TextBufferDisplay\TextBufferDisplayControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

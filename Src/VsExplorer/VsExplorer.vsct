@@ -40,25 +40,35 @@
           <ButtonText>Document Tree Viewer</ButtonText>
         </Strings>
       </Button>
+
+      <Button guid="guidVsExplorerCmdSet" id="cmdidDisplayDocumentTagView" priority="0x0100" type="Button">
+        <Parent guid="guidVsExplorerCmdSet" id="ExploreSubMenuGroup"/>
+        <Icon guid="guidImages" id="bmpPic2" />
+        <Strings>
+          <ButtonText>Document Tag Viewer</ButtonText>
+        </Strings>
+      </Button>
+
     </Buttons>
-   
+
     <Bitmaps>
       <Bitmap guid="guidImages" href="Resources\Images.png" usedList="bmpPic1, bmpPic2, bmpPicSearch, bmpPicX, bmpPicArrows"/>
     </Bitmaps>
- 
+
   </Commands>
 
   <Symbols>
     <GuidSymbol name="guidVsExplorerPkg" value="{7848ffb2-a704-43a2-9ef7-f0081cfc10d6}" />
-    
+
     <GuidSymbol name="guidVsExplorerCmdSet" value="{0a91773a-2787-42ca-9616-61ecf4f8a502}">
       <IDSymbol name="cmdidDisplayDocumentBufferView" value="0x0101" />
       <IDSymbol name="cmdidDisplayDocumentTreeView" value="0x0102" />
+      <IDSymbol name="cmdidDisplayDocumentTagView" value="0x0103" />
       <IDSymbol name="ExploreMenuGroup" value="0x1020" />
       <IDSymbol name="ExploreSubMenu" value="0x1021" />
       <IDSymbol name="ExploreSubMenuGroup" value="0x1022" />
     </GuidSymbol>
-    
+
     <GuidSymbol name="guidImages" value="{03fd82d7-0be0-46e3-a757-0d117252ff0b}" >
       <IDSymbol name="bmpPic1" value="1" />
       <IDSymbol name="bmpPic2" value="2" />
