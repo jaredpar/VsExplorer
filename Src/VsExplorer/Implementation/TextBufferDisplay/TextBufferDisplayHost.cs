@@ -1,4 +1,5 @@
 ﻿using Microsoft.VisualStudio.Text;
+using Microsoft.VisualStudio.Text.Projection;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -57,11 +58,28 @@ namespace VsExplorer.Implementation.TextBufferDisplay
                 name = "Unnamed Buffer";
             }
 
-            return new TextBufferInfo(
+            var textBufferInfo = new TextBufferInfo(
                 name,
                 documentPath,
                 textBuffer.ContentType.TypeName,
                 textBuffer.CurrentSnapshot.GetText());
+
+            AddSourceBuffers(textBuffer, textBufferInfo);
+            return textBufferInfo;
+        }
+
+        private void AddSourceBuffers(ITextBuffer textBuffer, TextBufferInfo textBufferInfo)
+        {
+            var projectionBuffer = textBuffer as IProjectionBufferBase;
+            if (projectionBuffer == null)
+            {
+                return;
+            }
+
+            foreach (var sourceBuffer in projectionBuffer.SourceBuffers)
+            {
+                textBufferInfo.SourceBuffers.Add(CreateTextBufferInfo(sourceBuffer));
+            }
         }
 
         private void OnTextBufferChanged(object sender, EventArgs e)

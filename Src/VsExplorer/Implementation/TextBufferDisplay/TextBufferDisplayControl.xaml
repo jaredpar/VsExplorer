@@ -7,6 +7,18 @@
              d:DesignHeight="300" 
              d:DesignWidth="300"
              DataContext="{Binding RelativeSource={RelativeSource Self}}">
+    <UserControl.Resources>
+        <Style TargetType="ListBoxItem">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ListBoxItem">
+                        <TextBlock Text="{Binding Path=Name}" />
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </UserControl.Resources>
+
     <ScrollViewer 
         HorizontalScrollBarVisibility="Auto"
         VerticalScrollBarVisibility="Auto">
@@ -24,16 +36,24 @@
                 <TextBlock Text="{Binding Path=DocumentPath}" />
             </TextBlock>
 
-            <!-- The identifier of the document -->
+            <!-- The content type of the document -->
             <TextBlock>
                 <TextBlock Text="Content Type: " FontWeight="Bold"/>
                 <TextBlock Text="{Binding Path=ContentType}" />
             </TextBlock>
 
-            <Separator />
+            <!-- Source Buffers participating in this document -->
+            <StackPanel Visibility="{Binding Path=SourceBuffersVisibility}">
+                <TextBlock Text="Source Buffers: " FontWeight="Bold" />
+                <Separator />
+                <ListBox ItemsSource="{Binding Path=SourceBuffers}" />
+            </StackPanel>
 
+            <!-- Text of the buffer -->
             <TextBlock Text="Text" FontWeight="Bold" />
+            <Separator />
             <TextBlock Text="{Binding Path=Text}" />
+
         </StackPanel>
     </ScrollViewer>
 </UserControl>

@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Microsoft.VisualStudio.Text;
 using System.Windows;
 using System.ComponentModel;
+using System.Collections.ObjectModel;
 
 namespace VsExplorer.Implementation.TextBufferDisplay
 {
@@ -15,6 +16,7 @@ namespace VsExplorer.Implementation.TextBufferDisplay
         private readonly string _name;
         private readonly string _documentPath;
         private readonly string _contentType;
+        private readonly ObservableCollection<TextBufferInfo> _sourceBuffers;
         private string _text;
         private event PropertyChangedEventHandler _propertyChanged;
 
@@ -53,12 +55,23 @@ namespace VsExplorer.Implementation.TextBufferDisplay
             }
         }
 
+        public ObservableCollection<TextBufferInfo> SourceBuffers
+        {
+            get { return _sourceBuffers; }
+        }
+
+        public Visibility SourceBuffersVisibility
+        {
+            get { return _sourceBuffers.Count == 0 ? Visibility.Collapsed : Visibility.Visible; }
+        }
+
         public TextBufferInfo(string name, string documentPath, string contentType, string text)
         {
             _name = name;
             _documentPath = documentPath;
             _contentType = contentType;
             _text = text;
+            _sourceBuffers = new ObservableCollection<TextBufferInfo>();
         }
 
         private void OnPropertyChanged(string name)
