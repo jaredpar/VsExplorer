@@ -23,9 +23,22 @@ namespace VsExplorer.Implementation.TextBufferDisplay
 
         private void UpdateTextBuffer(ITextBuffer textBuffer)
         {
+            if (_textBuffer != null)
+            {
+                WeakEventManager<ITextBuffer, TextContentChangedEventArgs>.RemoveHandler(_textBuffer, "Changed", OnTextBufferChanged);
+            }
+
             _textBuffer = textBuffer;
-            _textBufferDisplayControl.TextBufferInfo.Close();
-            _textBufferDisplayControl.TextBufferInfo = CreateTextBufferInfo(textBuffer);
+
+            if (textBuffer != null)
+            {
+                _textBufferDisplayControl.TextBufferInfo = CreateTextBufferInfo(textBuffer);
+                WeakEventManager<ITextBuffer, TextContentChangedEventArgs>.AddHandler(_textBuffer, "Changed", OnTextBufferChanged);
+            }
+            else
+            {
+                _textBufferDisplayControl.TextBufferInfo = TextBufferInfo.Empty;
+            }
         }
 
         private TextBufferInfo CreateTextBufferInfo(ITextBuffer textBuffer)
@@ -44,11 +57,16 @@ namespace VsExplorer.Implementation.TextBufferDisplay
                 name = "Unnamed Buffer";
             }
 
-
             return new TextBufferInfo(
-                textBuffer,
                 name,
-                documentPath);
+                documentPath,
+                textBuffer.ContentType.TypeName,
+                textBuffer.CurrentSnapshot.GetText());
+        }
+
+        private void OnTextBufferChanged(object sender, EventArgs e)
+        {
+            _textBufferDisplayControl.TextBufferInfo.Text = _textBuffer.CurrentSnapshot.GetText();
         }
 
         #region ITextBufferDisplayHost

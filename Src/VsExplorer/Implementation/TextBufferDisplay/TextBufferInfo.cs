@@ -12,15 +12,15 @@ namespace VsExplorer.Implementation.TextBufferDisplay
 {
     public sealed class TextBufferInfo : INotifyPropertyChanged
     {
-        private readonly ITextBuffer _textBuffer;
         private readonly string _name;
         private readonly string _documentPath;
-        private string _cachedText;
+        private readonly string _contentType;
+        private string _text;
         private event PropertyChangedEventHandler _propertyChanged;
 
         public static TextBufferInfo Empty
         {
-            get { return new TextBufferInfo(null, "", ""); }
+            get { return new TextBufferInfo("", "", "", ""); }
         }
 
         public string Name
@@ -40,51 +40,25 @@ namespace VsExplorer.Implementation.TextBufferDisplay
 
         public string ContentType
         {
-            get { return _textBuffer != null ? _textBuffer.ContentType.TypeName : ""; }
-        }
-
-        public ITextBuffer TextBuffer
-        {
-            get { return _textBuffer; }
+            get { return _contentType; }
         }
 
         public string Text
         {
-            get
+            get { return _text; }
+            set
             {
-                if (_cachedText == null)
-                {
-                    _cachedText = _textBuffer != null ? _textBuffer.CurrentSnapshot.GetText() : "";
-                }
-
-                return _cachedText;
+                _text = value;
+                OnPropertyChanged("Text");
             }
         }
 
-        public TextBufferInfo(ITextBuffer textBuffer, string name, string documentPath)
+        public TextBufferInfo(string name, string documentPath, string contentType, string text)
         {
-            _textBuffer = textBuffer;
             _name = name;
             _documentPath = documentPath;
-
-            if (_textBuffer != null)
-            {
-                WeakEventManager<ITextBuffer, TextContentChangedEventArgs>.AddHandler(_textBuffer, "Changed", OnTextBufferChanged);
-            }
-        }
-
-        public void Close()
-        {
-            if (_textBuffer != null)
-            {
-                WeakEventManager<ITextBuffer, TextContentChangedEventArgs>.RemoveHandler(_textBuffer, "Changed", OnTextBufferChanged);
-            }
-        }
-
-        private void OnTextBufferChanged(object sender, EventArgs e)
-        {
-            _cachedText = null;
-            OnPropertyChanged("Text");
+            _contentType = contentType;
+            _text = text;
         }
 
         private void OnPropertyChanged(string name)
