@@ -6,11 +6,11 @@
              xmlns:local="clr-namespace:VsExplorer.Implementation.TreeView"
              mc:Ignorable="d" 
              d:DesignHeight="300" 
-             d:DesignWidth="300"
+             d:DesignWidth="600"
              DataContext="{Binding RelativeSource={RelativeSource Self}}">
     <Grid Background="White">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="200" />
+            <ColumnDefinition Width="300" />
             <ColumnDefinition Width="5" />
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
