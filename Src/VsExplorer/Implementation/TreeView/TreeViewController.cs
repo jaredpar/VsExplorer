@@ -15,14 +15,18 @@ namespace VsExplorer.Implementation.TreeView
     internal sealed class TreeViewController : ITreeViewHost
     {
         private readonly ITextDocumentFactoryService _textDocumentFactoryService;
+        private readonly ITextBufferDisplayHost _textBufferDisplayHost;
         private readonly List<SourceBufferInfo> _sourceBufferInfoCollection = new List<SourceBufferInfo>();
         private ITextView _textView;
         private TreeViewDisplay _treeViewDisplay;
 
-        internal TreeViewController(ITextDocumentFactoryService textDocumentFactoryService)
+        internal TreeViewController(ITextDocumentFactoryService textDocumentFactoryService, ITextBufferDisplayHost textBufferDisplayHost)
         {
             _textDocumentFactoryService = textDocumentFactoryService;
+            _textBufferDisplayHost = textBufferDisplayHost;
             _treeViewDisplay = new TreeViewDisplay();
+            _treeViewDisplay.TextBufferControl = _textBufferDisplayHost.Visual;
+            _treeViewDisplay.SelectedSourceBufferInfoChanged += OnSelectedSourceBufferInfoChanged;
         }
 
         private void UpdateDisplay()
@@ -56,6 +60,7 @@ namespace VsExplorer.Implementation.TreeView
             addOne("Visual Buffer", _textView.TextViewModel.VisualBuffer);
 
             _sourceBufferInfoCollection.AddRange(map.Values);
+            _textBufferDisplayHost.TextBuffer = _textView.TextBuffer;
         }
 
         private Dictionary<ITextBuffer, SourceBufferInfo> GetSourceBufferInfoMap(ITextView textView)
@@ -97,7 +102,7 @@ namespace VsExplorer.Implementation.TreeView
             return map;
         }
 
-        void UpdateChildren(Dictionary<ITextBuffer, SourceBufferInfo> map)
+        private void UpdateChildren(Dictionary<ITextBuffer, SourceBufferInfo> map)
         {
             foreach (var sourceBufferInfo in map.Values)
             {
@@ -112,6 +117,11 @@ namespace VsExplorer.Implementation.TreeView
                     sourceBufferInfo.Children.Add(map[textBuffer]);
                 }
             }
+        }
+
+        private void OnSelectedSourceBufferInfoChanged(object sender, SourceBufferInfoEventArgs e)
+        {
+            _textBufferDisplayHost.TextBuffer = e.SourceBufferInfo.TextBuffer;
         }
 
         #region ITreeViewHost

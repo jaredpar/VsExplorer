@@ -1,0 +1,38 @@
+﻿<UserControl x:Class="VsExplorer.Implementation.TextBufferDisplay.TextBufferDisplayControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d" 
+             d:DesignHeight="300" 
+             d:DesignWidth="300"
+             DataContext="{Binding RelativeSource={RelativeSource Self}}">
+    <ScrollViewer 
+        HorizontalScrollBarVisibility="Auto"
+        VerticalScrollBarVisibility="Auto">
+
+        <StackPanel DataContext="{Binding Path=TextBufferInfo}" >
+            <!-- The identifier of the document -->
+            <TextBlock>
+                <TextBlock Text="Identifier: " />
+                <TextBlock Text="{Binding Path=Name}" />
+            </TextBlock>
+
+            <!-- Display the file path of the document -->
+            <TextBlock Visibility="{Binding Path=DocumentPathVisibility}">
+                <TextBlock Text="Path: " />
+                <TextBlock Text="{Binding Path=DocumentPath}" />
+            </TextBlock>
+
+            <!-- The identifier of the document -->
+            <TextBlock>
+                <TextBlock Text="Content Type: " />
+                <TextBlock Text="{Binding Path=ContentType}" />
+            </TextBlock>
+
+            <Separator />
+
+            <TextBlock Text="{Binding Path=Text}" />
+        </StackPanel>
+    </ScrollViewer>
+</UserControl>

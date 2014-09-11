@@ -1,4 +1,5 @@
-﻿using Microsoft.VisualStudio.Text.Editor;
+﻿using Microsoft.VisualStudio.Text;
+using Microsoft.VisualStudio.Text.Editor;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -30,6 +31,17 @@ namespace VsExplorer
     internal interface ITreeViewHostProvider
     {
         ITreeViewHost Create();
+    }
+
+    internal interface ITextBufferDisplayHost
+    {
+        UIElement Visual { get; }
+        ITextBuffer TextBuffer { get; set; }
+    }
+
+    internal interface ITextBufferDisplayHostProvider
+    {
+        ITextBufferDisplayHost Create();
     }
 
     internal interface ITextAdapter

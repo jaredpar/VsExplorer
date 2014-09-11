@@ -13,16 +13,18 @@ namespace VsExplorer.Implementation.TreeView
     internal sealed class TreeViewHostProvider : ITreeViewHostProvider
     {
         private readonly ITextDocumentFactoryService _textDocumentFactoryService;
+        private readonly ITextBufferDisplayHostProvider _textBufferDisplayHostProvider;
         
         [ImportingConstructor]
-        internal TreeViewHostProvider(ITextDocumentFactoryService textDocumentFactoryService)
+        internal TreeViewHostProvider(ITextDocumentFactoryService textDocumentFactoryService, ITextBufferDisplayHostProvider textBufferDisplayHostProvider)
         {
             _textDocumentFactoryService = textDocumentFactoryService;
+            _textBufferDisplayHostProvider = textBufferDisplayHostProvider;
         }
 
         ITreeViewHost ITreeViewHostProvider.Create()
         {
-            return new TreeViewController(_textDocumentFactoryService);
+            return new TreeViewController(_textDocumentFactoryService, _textBufferDisplayHostProvider.Create());
         }
     }
 }

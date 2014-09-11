@@ -172,6 +172,12 @@
     </Compile>
     <Compile Include="Implementation\BufferView\BufferViewController.cs" />
     <Compile Include="Implementation\Misc\TextAdapter.cs" />
+    <Compile Include="Implementation\TextBufferDisplay\TextBufferDisplayControl.xaml.cs">
+      <DependentUpon>TextBufferDisplayControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Implementation\TextBufferDisplay\TextBufferDisplayHost.cs" />
+    <Compile Include="Implementation\TextBufferDisplay\TextBufferInfo.cs" />
+    <Compile Include="Implementation\TextBufferDisplay\TextBufferDisplayHostProvider.cs" />
     <Compile Include="Implementation\TreeView\NamedBufferInfo.cs" />
     <Compile Include="Implementation\TreeView\SourceBufferInfo.cs" />
     <Compile Include="Implementation\TreeView\TreeViewController.cs" />
@@ -225,11 +231,16 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Implementation\TextBufferDisplay\TextBufferDisplayControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Implementation\TreeView\TreeViewDisplay.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
+  <ItemGroup />
   <PropertyGroup>
     <UseCodebase>true</UseCodebase>
   </PropertyGroup>

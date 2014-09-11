@@ -106,4 +106,14 @@ namespace VsExplorer.Implementation.TreeView
 
         #endregion
     }
+
+    public sealed class SourceBufferInfoEventArgs : EventArgs
+    {
+        public readonly SourceBufferInfo SourceBufferInfo;
+
+        internal SourceBufferInfoEventArgs(SourceBufferInfo sourceBufferInfo)
+        {
+            SourceBufferInfo = sourceBufferInfo;
+        }
+    }
 }

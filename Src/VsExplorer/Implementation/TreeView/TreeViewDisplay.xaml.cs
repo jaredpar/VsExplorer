@@ -21,11 +21,10 @@ namespace VsExplorer.Implementation.TreeView
     /// </summary>
     public partial class TreeViewDisplay : UserControl
     {
-        public static readonly DependencyProperty TextBufferInfoProperty = DependencyProperty.Register(
-            "TextBufferInfo",
-            typeof(SourceBufferInfo),
-            typeof(TreeViewDisplay),
-            new PropertyMetadata(SourceBufferInfo.Empty));
+        public static readonly DependencyProperty TextBufferControlProperty = DependencyProperty.Register(
+            "TextBufferControl",
+            typeof(UIElement),
+            typeof(TreeViewDisplay));
 
         private readonly ObservableCollection<NamedBufferInfo> _namedBufferInfoCollection = new ObservableCollection<NamedBufferInfo>();
 
@@ -34,31 +33,17 @@ namespace VsExplorer.Implementation.TreeView
             get { return _namedBufferInfoCollection; }
         }
 
-        public SourceBufferInfo TextBufferInfo
+        public UIElement TextBufferControl
         {
-            get { return (SourceBufferInfo)GetValue(TextBufferInfoProperty); }
-            set { SetValue(TextBufferInfoProperty, value); }
+            get { return (UIElement)GetValue(TextBufferControlProperty); }
+            set { SetValue(TextBufferControlProperty, value); }
         }
 
-        public event EventHandler TextBufferInfoChanged;
+        public event EventHandler<SourceBufferInfoEventArgs> SelectedSourceBufferInfoChanged;
 
         public TreeViewDisplay()
         {
             InitializeComponent();
-        }
-
-        protected override void OnPropertyChanged(DependencyPropertyChangedEventArgs e)
-        {
-            base.OnPropertyChanged(e);
-
-            if (e.Property == TextBufferInfoProperty)
-            {
-                var handler = TextBufferInfoChanged;
-                if (handler != null)
-                {
-                    handler(this, EventArgs.Empty);
-                }
-            }
         }
 
         private void OnTreeViewItemChanged(object sender, EventArgs e)
@@ -73,7 +58,12 @@ namespace VsExplorer.Implementation.TreeView
                 }
             }
 
-            TextBufferInfo = sourceBufferInfo != null ? sourceBufferInfo : SourceBufferInfo.Empty;
+            var list = SelectedSourceBufferInfoChanged;
+            if (sourceBufferInfo != null && list != null)
+            {
+                list(this, new SourceBufferInfoEventArgs(sourceBufferInfo));
+
+            }
         }
     }
 }
