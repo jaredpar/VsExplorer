@@ -44,6 +44,11 @@ namespace VsExplorer.Implementation.TagDisplay
             get { return _span.GetText(); }
         }
 
+        public string DisplayLine
+        {
+            get { return string.Format("[{0} - {1}) - {2}", _span.Start.Position, _span.End.Position, _span.GetText()); }
+        }
+
         public TagInfo(SnapshotSpan span)
         {
             _span = span;

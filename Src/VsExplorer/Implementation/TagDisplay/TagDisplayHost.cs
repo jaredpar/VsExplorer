@@ -25,12 +25,11 @@ namespace VsExplorer.Implementation.TagDisplay
 
         private void UpdateTextBuffer(ITextBuffer textBuffer)
         {
-            _tagDisplayControl.TagGroupCollection.Clear();
-
             if (_textBuffer != null)
             {
                 Debug.Assert(_tagAggregator != null);
                 WeakEventManager<ITagAggregator<ITag>, TagsChangedEventArgs>.RemoveHandler(_tagAggregator, "TagsChanged", OnTagsChanged);
+                WeakEventManager<ITagAggregator<ITag>, BatchedTagsChangedEventArgs>.RemoveHandler(_tagAggregator, "BatchedTagsChanged", OnBatchedTagsChanged);
                 _tagAggregator.Dispose();
             }
 
@@ -44,11 +43,14 @@ namespace VsExplorer.Implementation.TagDisplay
             _textBuffer = textBuffer;
             _tagAggregator = _tagAggregatorService.CreateTagAggregator<ITag>(textBuffer);
             WeakEventManager<ITagAggregator<ITag>, TagsChangedEventArgs>.AddHandler(_tagAggregator, "TagsChanged", OnTagsChanged);
+            WeakEventManager<ITagAggregator<ITag>, BatchedTagsChangedEventArgs>.AddHandler(_tagAggregator, "BatchedTagsChanged", OnBatchedTagsChanged);
             RebuildTags();
         }
 
         private void RebuildTags()
         {
+            _tagDisplayControl.TagGroupCollection.Clear();
+
             var span = new SnapshotSpan(_textBuffer.CurrentSnapshot, 0, _textBuffer.CurrentSnapshot.Length);
             foreach (var grouping in _tagAggregator.GetTags(span).GroupBy(x => x.Tag.GetType()))
             {
@@ -65,6 +67,11 @@ namespace VsExplorer.Implementation.TagDisplay
         }
 
         private void OnTagsChanged(object sender, TagsChangedEventArgs e)
+        {
+            RebuildTags();
+        }
+
+        private void OnBatchedTagsChanged(object sender, BatchedTagsChangedEventArgs e)
         {
             RebuildTags();
         }
