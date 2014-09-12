@@ -11,17 +11,19 @@ namespace VsExplorer.Implementation.TagDisplay
     [Export(typeof(ITagDisplayHostProvider))]
     internal sealed class TagDisplayHostProvider : ITagDisplayHostProvider
     {
-        private readonly IBufferTagAggregatorFactoryService _tagAggregatorService;
+        private readonly IBufferTagAggregatorFactoryService _bufferTagAggregatorService;
+        private readonly IViewTagAggregatorFactoryService _viewTagAggregatorService;
 
         [ImportingConstructor]
-        internal TagDisplayHostProvider(IBufferTagAggregatorFactoryService tagAggregatorService)
+        internal TagDisplayHostProvider(IBufferTagAggregatorFactoryService bufferTagAggregatorService, IViewTagAggregatorFactoryService viewTagAggregatorService)
         {
-            _tagAggregatorService = tagAggregatorService;
+            _bufferTagAggregatorService = bufferTagAggregatorService;
+            _viewTagAggregatorService = viewTagAggregatorService;
         }
 
         ITagDisplayHost ITagDisplayHostProvider.Create()
         {
-            return new TagDisplayHost(_tagAggregatorService);
+            return new TagDisplayHost(_bufferTagAggregatorService, _viewTagAggregatorService);
         }
     }
 }

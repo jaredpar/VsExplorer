@@ -1,4 +1,5 @@
 ﻿using Microsoft.VisualStudio.Text;
+using Microsoft.VisualStudio.Text.Editor;
 using Microsoft.VisualStudio.Text.Tagging;
 using System;
 using System.Collections.Generic;
@@ -12,18 +13,21 @@ namespace VsExplorer.Implementation.TagDisplay
 {
     internal sealed class TagDisplayHost : ITagDisplayHost
     {
-        private readonly IBufferTagAggregatorFactoryService _tagAggregatorService;
+        private readonly IBufferTagAggregatorFactoryService _bufferTagAggregatorService;
+        private readonly IViewTagAggregatorFactoryService _viewTagAggregatorService;
         private readonly TagDisplayControl _tagDisplayControl;
+        private ITextView _textView;
         private ITextBuffer _textBuffer;
         private ITagAggregator<ITag> _tagAggregator;
 
-        internal TagDisplayHost(IBufferTagAggregatorFactoryService tagAggregatorService)
+        internal TagDisplayHost(IBufferTagAggregatorFactoryService bufferTagAggregatorService, IViewTagAggregatorFactoryService viewTagAggregatorService)
         {
             _tagDisplayControl = new TagDisplayControl();
-            _tagAggregatorService = tagAggregatorService;
+            _bufferTagAggregatorService = bufferTagAggregatorService;
+            _viewTagAggregatorService = viewTagAggregatorService;
         }
 
-        private void UpdateTextBuffer(ITextBuffer textBuffer)
+        private void UpdateTextBuffer(ITextBuffer textBuffer, ITextView textView)
         {
             if (_textBuffer != null)
             {
@@ -36,12 +40,16 @@ namespace VsExplorer.Implementation.TagDisplay
             if (textBuffer == null)
             {
                 _textBuffer = null;
+                _textView = null;
                 _tagAggregator = null;
                 return;
             }
 
             _textBuffer = textBuffer;
-            _tagAggregator = _tagAggregatorService.CreateTagAggregator<ITag>(textBuffer);
+            _textView = textView;
+            _tagAggregator = textView == null
+                ? _bufferTagAggregatorService.CreateTagAggregator<ITag>(textBuffer)
+                : _viewTagAggregatorService.CreateTagAggregator<ITag>(textView);
             WeakEventManager<ITagAggregator<ITag>, TagsChangedEventArgs>.AddHandler(_tagAggregator, "TagsChanged", OnTagsChanged);
             WeakEventManager<ITagAggregator<ITag>, BatchedTagsChangedEventArgs>.AddHandler(_tagAggregator, "BatchedTagsChanged", OnBatchedTagsChanged);
             RebuildTags();
@@ -86,7 +94,13 @@ namespace VsExplorer.Implementation.TagDisplay
         ITextBuffer ITagDisplayHost.TextBuffer
         {
             get { return _textBuffer; }
-            set { UpdateTextBuffer(value); }
+            set { UpdateTextBuffer(value, null); }
+        }
+
+        ITextView ITagDisplayHost.TextView
+        {
+            get { return _textView; }
+            set { UpdateTextBuffer(value.TextBuffer, value); }
         }
 
         #endregion

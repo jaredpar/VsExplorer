@@ -13,7 +13,6 @@ namespace VsExplorer
     internal interface ITreeViewHost
     {
         UIElement Visual { get; }
-
         ITextView TextView { get; set; }
     }
 
@@ -28,9 +27,7 @@ namespace VsExplorer
     internal interface ITextBufferDisplayHost
     {
         UIElement Visual { get; }
-
         string Roles { get; set; }
-
         ITextBuffer TextBuffer { get; set; }
     }
 
@@ -42,8 +39,8 @@ namespace VsExplorer
     internal interface ITagDisplayHost
     {
         UIElement Visual { get; }
-
         ITextBuffer TextBuffer { get; set; }
+        ITextView TextView { get; set; }
     }
 
     internal interface ITagDisplayHostProvider
@@ -54,7 +51,6 @@ namespace VsExplorer
     internal interface ITextAdapter
     {
         ITextView ActiveTextViewOpt { get; }
-
         event EventHandler<ActiveTextViewChangedEventArgs> ActiveTextViewChanged;
     }
 

@@ -50,8 +50,7 @@ namespace VsExplorer
 
         private void Update(ITextView textView)
         {
-            var textBuffer = textView != null ? textView.TextBuffer : null;
-            _tagDisplayHost.TextBuffer = textBuffer;
+            _tagDisplayHost.TextView = textView;
         }
     }
 }
