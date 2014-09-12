@@ -60,7 +60,7 @@ namespace VsExplorer.Implementation.TagDisplay
             _tagDisplayControl.TagGroupCollection.Clear();
 
             var span = new SnapshotSpan(_textBuffer.CurrentSnapshot, 0, _textBuffer.CurrentSnapshot.Length);
-            foreach (var grouping in _tagAggregator.GetTags(span).GroupBy(x => x.Tag.GetType()))
+            foreach (var grouping in _tagAggregator.GetTags(span).GroupBy(GetTagGroupName))
             {
                 var snapshot = _textBuffer.CurrentSnapshot;
                 // TODO: GetSpans can throw IIRC
@@ -69,9 +69,27 @@ namespace VsExplorer.Implementation.TagDisplay
                     .Select(x => new TagInfo(x))
                     .ToList()
                     .AsReadOnly();
-                var tagGroup = new TagGroup(grouping.Key.Name, tagInfos);
+                var tagGroup = new TagGroup(grouping.Key, tagInfos);
                 _tagDisplayControl.TagGroupCollection.Add(tagGroup);
             }
+        }
+
+        private static string GetTagGroupName(IMappingTagSpan<ITag> span)
+        {
+            var tag = span.Tag;
+            var classificationTag = tag as IClassificationTag;
+            if (classificationTag != null)
+            {
+                return string.Format("Classification ({0})", classificationTag.ClassificationType.Classification);
+            }
+
+            var textMarkerTag = tag as ITextMarkerTag;
+            if (textMarkerTag != null)
+            {
+                return string.Format("TextMarkerTag ({0})", textMarkerTag.Type);
+            }
+
+            return tag.GetType().Name;
         }
 
         private void OnTagsChanged(object sender, TagsChangedEventArgs e)
@@ -100,7 +118,7 @@ namespace VsExplorer.Implementation.TagDisplay
         ITextView ITagDisplayHost.TextView
         {
             get { return _textView; }
-            set { UpdateTextBuffer(value.TextBuffer, value); }
+            set { UpdateTextBuffer(value != null ? value.TextBuffer : null, value); }
         }
 
         #endregion
