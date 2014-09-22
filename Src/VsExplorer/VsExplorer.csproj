@@ -165,7 +165,14 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DocumentTagToolWindow.cs" />
+    <Compile Include="LeakTextViewToolWindow.cs" />
     <Compile Include="DocumentTreeViewToolWindow.cs" />
+    <Compile Include="Implementation\LeakView\LeakDetector.cs" />
+    <Compile Include="Implementation\LeakView\LeakDisplayControl.xaml.cs">
+      <DependentUpon>LeakDisplayControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Implementation\LeakView\LeakViewHost.cs" />
+    <Compile Include="Implementation\LeakView\TextViewInfo.cs" />
     <Compile Include="Implementation\Misc\TextAdapter.cs" />
     <Compile Include="Implementation\TagDisplay\Model.cs" />
     <Compile Include="Implementation\TagDisplay\TagDisplayControl.xaml.cs">
@@ -194,7 +201,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="VsExplorerPackage.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="PkgCmdID.cs" />
@@ -228,6 +234,10 @@
     <Content Include="Resources\Package.ico" />
   </ItemGroup>
   <ItemGroup>
+    <Page Include="Implementation\LeakView\LeakDisplayControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Implementation\TagDisplay\TagDisplayControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

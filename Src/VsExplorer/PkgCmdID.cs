@@ -9,5 +9,6 @@ namespace VsExplorer
         internal const int DisplayDocumentBufferView = 0x101;
         internal const int DisplayDocumentTreeView = 0x102;
         internal const int DisplayDocumentTagView = 0x103;
+        internal const int DisplayLeakViewDetector = 0x104;
     };
 }

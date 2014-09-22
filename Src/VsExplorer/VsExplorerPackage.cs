@@ -35,6 +35,7 @@ namespace VsExplorer
     [ProvideToolWindow(typeof(DocumentBufferViewToolWindow))]
     [ProvideToolWindow(typeof(DocumentTreeViewToolWindow))]
     [ProvideToolWindow(typeof(DocumentTagToolWindow))]
+    [ProvideToolWindow(typeof(LeakTextViewToolWindow))]
     [Guid(GuidList.guidVsExplorerPkgString)]
     public sealed class VsExplorerPackage : Package
     {
@@ -71,6 +72,7 @@ namespace VsExplorer
                 AddDisplayToolWindow<DocumentBufferViewToolWindow>(commandService, GuidList.guidVsExplorerCmdSet, PackageCommands.DisplayDocumentBufferView);
                 AddDisplayToolWindow<DocumentTreeViewToolWindow>(commandService, GuidList.guidVsExplorerCmdSet, PackageCommands.DisplayDocumentTreeView);
                 AddDisplayToolWindow<DocumentTagToolWindow>(commandService, GuidList.guidVsExplorerCmdSet, PackageCommands.DisplayDocumentTagView);
+                AddDisplayToolWindow<LeakTextViewToolWindow>(commandService, GuidList.guidVsExplorerCmdSet, PackageCommands.DisplayLeakViewDetector);
             }
         }
 

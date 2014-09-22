@@ -21,6 +21,12 @@ namespace VsExplorer
         ITreeViewHost Create();
     }
 
+    internal interface ILeakViewHost
+    {
+        UIElement Visual { get; }
+        void Refresh();
+    }
+
     /// <summary>
     /// The host for displaying a control that represents an ITextBuffer
     /// </summary>
@@ -28,6 +34,9 @@ namespace VsExplorer
     {
         UIElement Visual { get; }
         string Roles { get; set; }
+
+        // TODO: Need to add a property that accepts ITextView as well so that we 
+        // don't have to manually update Roles.  ITagDisplayHost has the same problem
         ITextBuffer TextBuffer { get; set; }
     }
 
