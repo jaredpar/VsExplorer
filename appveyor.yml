@@ -1,0 +1,10 @@
+
+configuration: Debug
+
+build:
+  project: VsExplorer.sln
+  verbosity: minimal
+
+artifacts:
+  - path: Src\VsExplorer\bin\Debug\VsExplorer.vsix
+
